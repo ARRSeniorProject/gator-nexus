@@ -4,7 +4,9 @@
   "description": "MERN stack web app for student demographics",
   "main": "backend/server.js",
   "scripts": {
-    "client-install": "npm install --prefix frontend",
+    "frontend-install": "npm i --prefix frontend",
+    "backend-install": "npm i --prefix backend",
+    "install": "npm run frontend-install && npm run backend-install",
     "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm start\""
   },
   "author": "",
