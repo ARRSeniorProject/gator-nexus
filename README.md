@@ -1,3 +1,6 @@
+
+[![Build Status](https://travis-ci.com/ARRSeniorProject/gator-nexus.svg?branch=main)](https://travis-ci.com/ARRSeniorProject/gator-nexus)
+
 # GatorNexus
 
 This is a MERN Stack web application that gathers and displays demographic data on undergraduate computers science students.
