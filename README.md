@@ -60,3 +60,6 @@ We used code from Reactstrap to help build the front end of our website.
 ### Changing Database and Server Connections
 
 Add all database keys and tokens to a .env folder in the root folder.
+
+Current Variables:
+MONGO_URI 
