@@ -14,18 +14,20 @@ require('dotenv').config({path: path.resolve(__dirname, '../.env')});
 const port = process.env.PORT || 5000;
 
 // DB Config
-//const db = require('./config/keys').mongoURI;
 const db = process.env.MONGO_URI;
 
 if (process.env.NODE_ENV === 'production') {
 	app.use(express.static('../frontend/build'));
 }
 
-
 // Connect to Mongo
 mongoose.connect(db, {useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true})
   .then(() => console.log('MongoDB Connected...'))
   .catch(err => console.log(err));
+
+app.get('*', (request, response) => {
+  response.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
+});
 
 // Use Routes
 app.use('/api/items', items);
