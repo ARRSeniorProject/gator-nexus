@@ -1,17 +1,31 @@
 import React, { Component } from 'react';
 import AppNavbar from './components/AppNavbar';
-import ItemList from './components/ItemList';
-
-
+import SideBar from './components/SideBar';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css';
+import Home from './pages/Home';
+import Directory from './pages/Directory';
+import Analysis from './pages/Analysis';
+import NewProfile from './pages/NewProfile';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <AppNavbar/>
-        <ItemList/>
+        <Router>
+          <SideBar />
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/directory" exact component={Directory} />
+            <Route path="/analysis" exact component={Analysis} />
+            <Route path="/newprofile" exact component={NewProfile} />
+          </Switch>
+        </Router>
       </div>
     )
   }

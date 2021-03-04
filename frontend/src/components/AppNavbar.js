@@ -9,6 +9,7 @@ import {
   NavLink,
   Container
 } from 'reactstrap';
+import '../css/AppNavbar.css';
 
 class AppNavbar extends Component {
   state = {
@@ -24,14 +25,14 @@ class AppNavbar extends Component {
   render() {
     return (
       <div>
-        <Navbar color="dark" dark expand="sm" className="mb-5">
+        <Navbar expand="sm" className="mb-5 app-navbar">
           <Container>
-            <NavbarBrand href="/">GatorNexus</NavbarBrand>
+            <NavbarBrand className="text-white" href="/">GatorNexus</NavbarBrand>
             <NavbarToggler onClick={this.toggle} />
             <Collapse isOpen={this.state.isOpen} navbar>
               <Nav className="ml-auto" navbar>
                 <NavItem>
-                  <NavLink href="https://github.com/RicardoGolac">
+                  <NavLink className="text-white" href="https://github.com">
                     Github
                   </NavLink>
                 </NavItem>

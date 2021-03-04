@@ -59,4 +59,4 @@ We used code from Reactstrap to help build the front end of our website.
 
 ### Changing Database and Server Connections
 
-To change API Keys, copy the keys_example.js file in /server/config and enter in your own keys.
+Add all database keys and tokens to a .env folder in the root folder.
