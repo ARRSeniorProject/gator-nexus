@@ -5,3 +5,11 @@ cache: npm
 
 install:
   - npm ci
+
+deploy:
+  provider: heroku
+  api_key:
+    secure: 
+  on:
+    tags: true
+    all_branches: true
