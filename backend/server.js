@@ -17,6 +17,10 @@ const port = process.env.PORT || 5000;
 //const db = require('./config/keys').mongoURI;
 const db = process.env.MONGO_URI;
 
+if (process.env.NODE_ENV === 'production') {
+	app.use(express.static('../frontend/build'));
+}
+
 
 // Connect to Mongo
 mongoose.connect(db, {useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true})
