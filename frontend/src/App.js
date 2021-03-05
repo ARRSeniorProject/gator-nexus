@@ -8,13 +8,13 @@ import {
 } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css';
+import ItemList from './components/ItemList'
 import Home from './pages/Home';
 import Directory from './pages/Directory';
 import Analysis from './pages/Analysis';
 import NewProfile from './pages/NewProfile';
 
 class App extends Component {
-
   render() {
     return (
       <div className="App">
