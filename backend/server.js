@@ -20,10 +20,15 @@ mongoose.connect(db, {useCreateIndex: true, useNewUrlParser: true, useUnifiedTop
   .then(() => console.log('MongoDB Connected...'))
   .catch(err => console.log(err));
 
-
-
 // Use Routes
 app.use('/api/items', items);
+app.get("/api/message", async (req, res, next) => {
+  try {
+    res.status(201).json({ message: "HELLOOOOO FROM EXPRESS" });
+  } catch (err) {
+    next(err);
+  }
+});
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
