@@ -2,12 +2,12 @@
   "name": "gator-nexus",
   "version": "1.0.0",
   "description": "MERN stack web app for student demographics",
-  "main": "backend/server.js",
+  "main": "server.js",
   "scripts": {
     "frontend-install": "npm i --prefix frontend",
     "server": "nodemon server.js",
     "dev": "concurrently \"npm run server\" \"cd frontend && npm start\"",
-    "start": "NODE_ENV=production node server.js",
+    "start": "node server.js",
     "test": "",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
   },
