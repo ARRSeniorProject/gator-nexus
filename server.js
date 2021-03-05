@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 
 // Load Environment Variables
-require('dotenv').config({path: path.resolve(__dirname, '../.env')});
+require('dotenv').config({path: path.resolve(__dirname, '.env')});
 const port = process.env.PORT || 5000;
 // DB Config
 const db = process.env.MONGO_URI;
@@ -33,9 +33,9 @@ app.get("/api/message", async (req, res, next) => {
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
   // Set static folder
-	app.use(express.static('../frontend/build'));
+	app.use(express.static('frontend/build'));
   app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname + '/../frontend/build/index.html'))
+    res.sendFile(path.resolve(__dirname + 'frontend/build/index.html'))
   });
 }
 
