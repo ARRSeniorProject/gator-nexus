@@ -11,6 +11,7 @@ router.get('/', (req, res) => {
   Item.find()
     .sort({ date: -1 })
     .then(items => res.json(items))
+    .catch(err => res.status(400).json('Error: ' + err));
 });
 
 // @route   POST api/items
@@ -20,8 +21,24 @@ router.post('/', (req, res) => {
   const newItem = new Item({
     name: req.body.name
   });
+  newItem.save()
+    .then(item => res.json(item))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
 
-  newItem.save().then(item => res.json(item));
+// @route   GET api/items/update/:id
+// @desc    Update An Item
+// @access  Public
+router.get('/:id', (req, res) => {
+  Item.findById(req.params.id)
+    .then(item => {
+      item.name = req.body.name;
+
+      item.save()
+        .then(() => res.json('Item updated!'))
+        .catch(err => res.status(400).json('Error: ' + err));
+    })
+    .catch(err => res.status(400).json('Error: ' + err));
 });
 
 // @route   DELETE api/items/:id
