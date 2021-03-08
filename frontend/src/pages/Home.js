@@ -1,9 +1,10 @@
 import React from 'react';
+import PieChart from './HomeComponents/PieChart';
 
 function Home() {
   return (
-    <div className='home'>
-      <h1>Home</h1>
+    <div className='home-container'>
+      <PieChart />
     </div>
   )
 }

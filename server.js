@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 
 // Routes
-const items = require('./routes/api/items')
+const items = require('./routes/api/items');
 
 // Middleware
 const app = express();

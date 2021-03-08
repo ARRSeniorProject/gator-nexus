@@ -1,10 +1,10 @@
 import React from 'react';
+import ItemList from '../components/ItemList'
 
 function Directory() {
   return (
-    <div className='home'>
-      <h1>Directory</h1>
-      
+    <div className='directory-container'>
+      <ItemList />
     </div>
   )
 }

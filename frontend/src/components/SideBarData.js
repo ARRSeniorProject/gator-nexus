@@ -10,19 +10,19 @@ export const SideBarData = [
   },
   {
     title: "Directory",
-    path: "/directory",
+    path: "/api/directory",
     icon: <MdIcons.MdSearch />,
     cName: 'nav-text'
   },
   {
     title: "Analysis",
-    path: "/analysis",
+    path: "/api/analysis",
     icon: <MdIcons.MdAssessment />,
     cName: 'nav-text'
   },
   {
     title: "NewProfile",
-    path: "/newprofile",
+    path: "/api/newprofile",
     icon: <MdIcons.MdAdd />,
     cName: 'nav-text'
   }
