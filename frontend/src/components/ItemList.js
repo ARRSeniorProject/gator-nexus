@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container, ListGroup, ListGroupItem, Button } from 'reactstrap';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import {v4 as uuid} from 'uuid';
+
 import axios from 'axios';
 
 const Item = props => (
@@ -26,16 +26,20 @@ class ItemList extends Component {
   constructor(props) {
     super(props);
     
+    this.onChangeName = this.onChangeName.bind(this);
+    this.addItem = this.addItem.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.onClick = this.onClick.bind(this);
     this.state = {
       name: "",
       size: 0,
+      loading: false,
       items: []
     };
   }
 
   componentDidMount(){
-    console.log("Component Mounted!");
     axios
       .get("/api/items")
       .then(res => {
@@ -47,16 +51,18 @@ class ItemList extends Component {
       .catch(err => { console.log(err)});
   }
 
-  getItemSize(){
-    axios
-      .get("/api/items/")
-      .then(res => console.log(Object.keys(res.data).length))
-      .catch(err => console.log(err));
-  }
+  onChangeName(e) {
+    this.setState({
+      name: e.target.value
+    });
+  };
 
   addItem(item) {
-
-  };
+    axios
+      .post('/api/items/', item)
+      .then(res => console.log(res.data))
+      .catch(err => console.log(err));
+  }
 
   deleteItem(id) {
     axios
@@ -66,6 +72,23 @@ class ItemList extends Component {
     this.setState({
       items: this.state.items.filter(el => el._id !== id)
     });
+  };
+
+  onSubmit(e) {
+    e.preventDefault();
+    const item = {
+      name: this.state.name,
+    };
+    console.log(item);
+    this.props.addItem(item);
+  }
+
+  onClick() {
+    const item = {
+      name: this.state.name,
+    };
+    console.log(item);
+    this.props.addItem(item);
   }
 
   itemList() {
@@ -91,9 +114,8 @@ class ItemList extends Component {
           onClick={() => {
             const name = prompt('Enter Item');
             if (name) {
-              this.setState(state => ({
-                items: [...state.items, { id: uuid(), name }]
-              }));
+              console.log(name);
+              this.setState({name: name});
             }
           }}
         >Add Item</Button>

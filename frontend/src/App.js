@@ -7,7 +7,6 @@ import {
 } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import ItemList from './components/ItemList';
 import Home from './pages/Home';
 import Directory from './pages/Directory';
 import Analysis from './pages/Analysis';
@@ -20,7 +19,7 @@ class App extends Component {
         <Router>
           <SideBar />
           <Switch>
-            <Route path="/" exact component={ItemList} />
+            <Route path="/" exact component={Home} />
             <Route path="/api/directory" exact component={Directory} />
             <Route path="/api/analysis" exact component={Analysis} />
             <Route path="/api/newprofile" exact component={NewProfile} />

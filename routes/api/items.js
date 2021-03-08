@@ -29,7 +29,7 @@ router.post('/', (req, res) => {
 // @route   GET api/items/update/:id
 // @desc    Update An Item
 // @access  Public
-router.get('/:id', (req, res) => {
+router.get('/update/:id', (req, res) => {
   Item.findById(req.params.id)
     .then(item => {
       item.name = req.body.name;
