@@ -4,6 +4,7 @@ const path = require('path');
 
 // Routes
 const items = require('./routes/api/items');
+const personas = require('./routes/api/personas');
 
 // Middleware
 const app = express();
@@ -28,6 +29,12 @@ app.get("/api/message", async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+});
+
+app.use('/api/personas', personas);
+
+app.get('/', (req, res) => {
+  res.send('We are on home');
 });
 
 // Serve static assets if in production
