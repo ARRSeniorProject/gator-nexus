@@ -2,11 +2,12 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const PersonaSchema = new Schema({
-    hasInternship: {
+    hasJob: {
         type: Boolean
     },
     company: {
         type: String,
+        default: "N/A",
         required: false
     },
     major: {
@@ -62,9 +63,17 @@ const PersonaSchema = new Schema({
         min: 0,
         required: [true, 'Interview Preparation Time is required']
     },
+    hasContactInfo: {
+        type: Boolean
+    },
     phoneNumber: {
         type: String,
-        match: '^\d{3}-\d{3}-\d{4}$',
+        match: /^\d{3}-\d{3}-\d{4}$/,
+        required: false
+    },
+    email: {
+        type: String,
+        match: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
         required: false
     },
     profilePictureLink: {
