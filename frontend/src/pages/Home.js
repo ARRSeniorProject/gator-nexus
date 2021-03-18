@@ -1,10 +1,14 @@
 import React from 'react';
-import PieChart from './HomeComponents/PieChart';
+import PieChartGraph from './HomeComponents/PieChartGraph';
+import ScatterChartGraph from './HomeComponents/ScatterChartGraph';
+import BarChartGraph from './HomeComponents/BarChartGraph';
 
 function Home() {
   return (
     <div className='home-container'>
-      <PieChart />
+      <PieChartGraph />
+      <BarChartGraph />
+      <ScatterChartGraph />
     </div>
   )
 }

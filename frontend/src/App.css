@@ -7,7 +7,9 @@
   font-family: 'Montserrat', 'sans-serif';
 }
 
-.home-container, 
+.home-container {
+  
+}
 .directory-container, 
 .newprofile-container, 
 .analysis-container {
