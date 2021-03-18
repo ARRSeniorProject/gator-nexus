@@ -68,11 +68,13 @@ const PersonaSchema = new Schema({
     },
     phoneNumber: {
         type: String,
+        default: "N/A",
         match: /^\d{3}-\d{3}-\d{4}$/,
         required: false
     },
     email: {
         type: String,
+        default: "N/A",
         match: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
         required: false
     },
