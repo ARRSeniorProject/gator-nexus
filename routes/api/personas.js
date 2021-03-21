@@ -18,13 +18,17 @@ router.post('/', (req, res) => {
     if(Array.isArray(req.body)) {
         const multiplePersonas = req.body.map(element => ({
             ...element,
+            company: element.company,
+            minor: element.minor,
+            phoneNumber: element.phoneNumber,
+            email: element.email,
             hasJob: "company" in element,
             hasContactInfo: ("phoneNumber" in element) || ("email" in element),
             profilePictureLink: `https://avatars.dicebear.com/api/jdenticon/${Math.random().toString(36).substr(2, 8)}.svg`
         }));
         Persona.insertMany(multiplePersonas)
         .then(docs => res.json(docs))
-        .catch(() => res.status(404).json({success: false}));
+        .catch(err => res.status(404).json('Error: ' + err));
     }
     else {
         let profileSeed = Math.random().toString(36).substr(2, 8);
