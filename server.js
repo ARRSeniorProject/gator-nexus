@@ -6,6 +6,7 @@ const path = require('path');
 const items = require('./routes/api/items');
 const personas = require('./routes/api/personas');
 const aggregate = require('./routes/api/aggregate');
+const profile = require('./routes/api/profile')
 
 // Middleware
 const app = express();
@@ -26,6 +27,7 @@ mongoose.connect(db, {useCreateIndex: true, useNewUrlParser: true, useUnifiedTop
 app.use('/api/items', items);
 app.use('/api/personas', personas);
 app.use('/api/aggregate', aggregate);
+app.use('/api/profile-picture', profile);
 
 /*app.get('/', (req, res) => {
   res.send('Index');

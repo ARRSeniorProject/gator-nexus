@@ -21,9 +21,9 @@ export const SideBarData = [
     cName: 'nav-text'
   },
   {
-    title: "NewProfile",
+    title: "New Profile",
     path: "/api/newprofile",
-    icon: <MdIcons.MdAdd />,
+    icon: <MdIcons.MdAccountBox />,
     cName: 'nav-text'
   }
 ]
