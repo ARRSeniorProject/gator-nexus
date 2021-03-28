@@ -7,6 +7,8 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import { TextField } from '@material-ui/core';
 
 class NewProfileForm extends Component {
     constructor(props) {
@@ -74,7 +76,39 @@ class NewProfileForm extends Component {
     render() {
         return(
             <div>
-                <Card>
+                <form>
+                    <Grid container direction="row" justify="flex-start" alignItems="flex-start" spacing={1}>
+                        <Grid container xs={12} spacing={1}>
+                            <Grid item>
+                                <TextField label="Major" variant="outlined" />
+                            </Grid>
+                            <Grid item>
+                                <TextField label="Minor" variant="outlined" />
+                            </Grid>
+                            <Grid item>
+                                <TextField label="GPA" variant="outlined" style={{width: '50%'}} />
+                            </Grid>
+                        </Grid>
+                        <Grid container xs={12} spacing={1}>
+                            <Grid item>
+                                <TextField label="Academic Standing" variant="outlined" style={{width: '75%'}} />
+                            </Grid>
+                            <Grid item sm={5}>
+                                <TextField label="Skills" variant="outlined" style={{width: '25%'}} />
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={8}>
+                            <TextField label="Company" variant="outlined" />
+                        </Grid>
+                        <Grid item xs={2}>
+                            <TextField label="Employment Status" variant="outlined" />
+                        </Grid>
+                        <Grid item xs={2}>
+                            <TextField label="Interview Preparation Time" variant="outlined" />
+                        </Grid>
+                    </Grid>
+                </form>
+                {/*<Card>
                     <CardActionArea>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="h2">
@@ -83,12 +117,15 @@ class NewProfileForm extends Component {
                         </CardContent>
                     </CardActionArea>
                     <CardActions>
+                    <Button variant="contained" component="label">
+                        <input type="file" onChange={this.fileChangedHandler}/>
+                    </Button>
                     <input type="file" onChange={this.fileChangedHandler}/>
                     <Button size="small" color="primary" onClick={this.fileUploadHandler}>
-                        Upload Image
+                        Save
                     </Button>
                     </CardActions>
-                </Card>
+                </Card>*/}
                 {/*<div id="oc-alert-container"></div>*/}
                 {/*<div className="card border-light mb-3 mt-5" style={{ boxShadow: '0 5px 10px 2px rgba(195,192,192,.5)' }}>
                     {/*<div className="card-header">
