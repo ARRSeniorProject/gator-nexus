@@ -14,26 +14,6 @@ router.get('/', (req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-// @route   GET api/students/male
-// @desc    Get All Male Students
-// @access  Public
-router.get('/male', (req, res) => {
-  Student.find({gender: 'male'})
-    .sort({ date: -1 })
-    .then(students => res.json(students))
-    .catch(err => res.status(400).json('Error: ' + err));
-});
-
-// @route   GET api/students/female
-// @desc    Get All Female Students
-// @access  Public
-router.get('/female', (req, res) => {
-  Student.find({gender: 'female'})
-    .sort({ date: -1 })
-    .then(students => res.json(students))
-    .catch(err => res.status(400).json('Error: ' + err));
-});
-
 // @route   POST api/students
 // @desc    Create A Student
 // @access  Public
@@ -44,7 +24,8 @@ router.post('/', (req, res) => {
     major: req.body.major,
     academicstanding: req.body.academicstanding,
     gpa: req.body.gpa,
-    race: req.body.race
+    race: req.body.race,
+    internship: req.body.internship
   });
   newStudent.save()
     .then(student => res.json(student))

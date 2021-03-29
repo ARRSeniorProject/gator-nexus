@@ -16,8 +16,13 @@ function SideBar() {
       <div className="navbar">
         <Link to="#" className="menu-bars">
           <MdIcons.MdMenu onClick={showSidebar} />
+          
         </Link>
+        <div className="title">
+          <h2>GatorNexus</h2>
+        </div>
       </div>
+      
       <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
         <ul className='nav-menu-items' onClick={showSidebar}>
           <li className="navbar-toggle">

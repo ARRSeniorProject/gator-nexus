@@ -8,6 +8,7 @@ const StudentSchema = new Schema({
   academicstanding: { type: Number, min: 1, max: 6 },
   gpa: { type: Number },
   race: { type: String, default: "Not Specified"},
+  internship: { type: Boolean },
   date: { type: Date, default: Date.now }
 });
 

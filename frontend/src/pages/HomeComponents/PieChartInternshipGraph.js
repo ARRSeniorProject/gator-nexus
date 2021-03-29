@@ -17,25 +17,42 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
   );
 };
 
-class PieChartGraph extends PureComponent {
+class PieChartInternshipGraph extends PureComponent {
   constructor(props) {
     super(props);
 
     this.state = {
       realData: [],
       size: 0,
-      malecount: 0,
-      femalecount: 0,
-      students: [],
-      malestudents: [],
-      femalestudents: []
+      yesCount: 0,
+      noCount: 0
     }
+  }
+
+  getInternshipTrueCount(arr) {
+    var count = 0;
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i].internship === true) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  getInternshipFalseCount(arr) {
+    var count = 0;
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i].internship === false) {
+        count++;
+      }
+    }
+    return count;
   }
 
   async formData() {
     const newData = [
-      { name: "Male", value: this.state.malecount },
-      { name: "Female", value: this.state.femalecount},
+      { name: "Yes", value: this.state.yesCount },
+      { name: "No", value: this.state.noCount }
     ];
     this.setState({realData: newData});
   }
@@ -46,24 +63,11 @@ class PieChartGraph extends PureComponent {
         .get("/api/students")
         .then(res => {
           const data = res.data;
-          this.setState({students: data});
+          const yesInternship = this.getInternshipTrueCount(data);
+          const noInternship = this.getInternshipFalseCount(data);
           this.setState({size: Object.keys(data).length});
-        })
-        .catch(err => { console.log(err)});
-      await axios
-        .get("/api/students/male")
-        .then(res => {
-          const data = res.data;
-          this.setState({malestudents: data});
-          this.setState({malecount: Object.keys(data).length});
-        })
-        .catch(err => { console.log(err)});
-      await axios
-        .get("/api/students/female")
-        .then(res => {
-          const data = res.data;
-          this.setState({femalestudents: data});
-          this.setState({femalecount: Object.keys(data).length});
+          this.setState({yesCount: yesInternship});
+          this.setState({noCount: noInternship});
         })
         .catch(err => { console.log(err)});
       await this.formData();
@@ -75,11 +79,8 @@ class PieChartGraph extends PureComponent {
   render() {
     return (
       <>
-        <h3>{this.state.size} students</h3>
-        <h3>{this.state.malecount} male students</h3>
-        <h3>{this.state.femalecount} female students</h3>
         {this.state.realData.length > 0 && (
-          <PieChart width={400} height={400}>
+          <PieChart width={500} height={300}>
             <Legend />
             <Pie
               data={this.state.realData}
@@ -103,4 +104,4 @@ class PieChartGraph extends PureComponent {
   }
 }
 
-export default PieChartGraph;
+export default PieChartInternshipGraph;
