@@ -47,9 +47,9 @@ class App extends Component {
           <SideBar handlechange={this.handlechange} state={this.state}/>
           <Switch>
             <Route path="/" exact component={Home}/>
-            <Route path="/directory" exact component={() => <Directory handlechange={this.handlechange} state={this.state}/>}/>
-            <Route path="/analysis" exact component={Analysis} />
-            <Route path="/newprofile" exact component={NewProfile} />
+            <Route path="/api/directory" exact component={() => <Directory handlechange={this.handlechange} state={this.state}/>}/>
+            <Route path="/api/analysis" exact component={Analysis} />
+            <Route path="/api/newprofile" exact component={NewProfile} />
           </Switch>
         </Router>
       </div>
