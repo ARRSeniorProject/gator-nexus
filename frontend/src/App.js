@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-//import AppNavbar from './components/AppNavbar';
 import SideBar from './components/SideBar';
 import {
   BrowserRouter as Router,
   Switch,
   Route
 } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import ItemList from './components/ItemList'
 import Home from './pages/Home';
 //import ItemList from './components/ItemList';
 import Directory from './pages/Directory';
