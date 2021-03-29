@@ -7,7 +7,6 @@ import '../css/SideBar.css';
 
 function SideBar() {
   const [sidebar, setSidebar] = useState(false);
-
   const showSidebar = () => setSidebar(!sidebar);
 
   return(
@@ -16,7 +15,6 @@ function SideBar() {
       <div className="navbar">
         <Link to="#" className="menu-bars">
           <MdIcons.MdMenu onClick={showSidebar} />
-          
         </Link>
         <div className="title">
           <h2>GatorNexus</h2>
