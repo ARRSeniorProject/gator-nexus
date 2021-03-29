@@ -1,25 +1,75 @@
-import React, { useState } from 'react';
+import React, { Component, useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as MdIcons from "react-icons/md";
 import { SideBarData } from './SideBarData';
 import { IconContext } from 'react-icons';
 import '../css/SideBar.css';
 
-function SideBar() {
-  const [sidebar, setSidebar] = useState(false);
+class SideBar extends Component{
 
-  const showSidebar = () => setSidebar(!sidebar);
+  constructor() {
+    super();
+  }
+
+  /*constructor() {
+    super();
+    this.state = {
+      sidebar: false
+    }
+    this.handlechange = this.handlechange.bind(this);
+  }
+
+  handlechange() { 
+
+    if(!this.state.sidebar)
+    {
+    this.setState({
+      sidebar: true
+    });
+    }
+    else
+    {
+      this.setState({
+        sidebar: false
+      });
+    }
+
+  }*/
+
+  render() {
+
+    //return(
+
+// function SideBar() {
+
+  // constructor() {
+  //   super();
+  //   this.state = {
+  //     sidebar: false
+  //   }
+  //   this.handlechange = this.handlechange.bind(this);
+  // }
+
+  // handlechange() {
+  //   this.setstate({
+  //     sidebar: true
+  //   });
+  // }
+
+  //const [sidebar, setSidebar] = useState(false);
+
+  //const showSidebar = () => setSidebar(!sidebar);
 
   return(
     <>
     <IconContext.Provider value={{color: '#fff'}}>
       <div className="navbar">
         <Link to="#" className="menu-bars">
-          <MdIcons.MdMenu onClick={showSidebar} />
+          <MdIcons.MdMenu onClick={this.props.handlechange} />
         </Link>
       </div>
-      <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
-        <ul className='nav-menu-items' onClick={showSidebar}>
+      <nav className={this.props.state.sidebar ? 'nav-menu active' : 'nav-menu'}>
+        <ul className='nav-menu-items' onClick={this.props.handlechange}>
           <li className="navbar-toggle">
             <Link to="#" className="menu-bars">
               <MdIcons.MdClose />
@@ -39,7 +89,10 @@ function SideBar() {
       </nav>
       </IconContext.Provider>
     </>
-  )
-}
+  // )
+/*}*/ )
 
+  }
+
+}
 export default SideBar;
