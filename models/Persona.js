@@ -26,8 +26,8 @@ const PersonaSchema = new Schema({
         required: [true, 'GPA is required']
     },
     academicStanding: {
-        type: String,
-        enum: ['Freshman', 'Sophomore', 'Junior', 'Senior', 'Super Senior'],
+        type: Number,
+        min: 1,
         required: [true, 'Academic Standing is required']
     },
     skills: {
@@ -36,7 +36,7 @@ const PersonaSchema = new Schema({
     },
     race: {
         type: String,
-        enum: ['White', 'Black or African American', 'Hispanic or Latino', 'American Indian or Alaska Native', 'Asian', 'Native Hawaiian or Other Pacific Islander'],
+        enum: ['White', 'Black', 'Hispanic or Latino', 'Native American', 'Asian', 'Pacific Islander', 'Other'],
         required: [true, 'Ethnicity is required']
     },
     age: {
