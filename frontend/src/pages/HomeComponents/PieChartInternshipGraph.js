@@ -32,7 +32,7 @@ class PieChartInternshipGraph extends PureComponent {
   getInternshipTrueCount(arr) {
     var count = 0;
     for (var i = 0; i < arr.length; i++) {
-      if (arr[i].internship === true) {
+      if (arr[i].hasJob === true) {
         count++;
       }
     }
@@ -42,7 +42,7 @@ class PieChartInternshipGraph extends PureComponent {
   getInternshipFalseCount(arr) {
     var count = 0;
     for (var i = 0; i < arr.length; i++) {
-      if (arr[i].internship === false) {
+      if (arr[i].hasJob === false) {
         count++;
       }
     }
@@ -60,7 +60,7 @@ class PieChartInternshipGraph extends PureComponent {
   async componentDidMount(){
     try {
       await axios
-        .get("/api/students")
+        .get("/api/personas")
         .then(res => {
           const data = res.data;
           const yesInternship = this.getInternshipTrueCount(data);

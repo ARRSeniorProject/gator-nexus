@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import axios from 'axios';
 import { PieChart, Pie, Cell, Legend } from 'recharts';
 
-const COLORS = ['#0088FE', '#C4270C', '#FFBB28', '#FF8042', '#56D62B'];
+const COLORS = ['#0088FE', '#C4270C', '#FFBB28', '#FF8042', '#56D62B', '#d203fc', '#03f0fc'];
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
@@ -28,54 +28,16 @@ class PieChartEthnicityGraph extends PureComponent {
       asianCount: 0,
       blackCount: 0,
       latinoCount: 0,
+      nativeCount: 0,
+      pacificIslanderCount: 0,
       otherCount: 0
     }
   }
 
-  getWhiteCount(arr) {
+  getRaceOrEthnicityCount(arr, race) {
     var count = 0;
     for (var i = 0; i < arr.length; i++) {
-      if ( arr[i].race === "White") {
-        count++;
-      }
-    }
-    return count;
-  }
-
-  getAsianCount(arr) {
-    var count = 0;
-    for (var i = 0; i < arr.length; i++) {
-      if ( arr[i].race === "Asian") {
-        count++;
-      }
-    }
-    return count;
-  }
-
-  getBlackCount(arr) {
-    var count = 0;
-    for (var i = 0; i < arr.length; i++) {
-      if ( arr[i].race === "Black") {
-        count++;
-      }
-    }
-    return count;
-  }
-
-  getLatinoCount(arr) {
-    var count = 0;
-    for (var i = 0; i < arr.length; i++) {
-      if ( arr[i].race === "Latino") {
-        count++;
-      }
-    }
-    return count;
-  }
-
-  getOtherRaceCount(arr) {
-    var count = 0;
-    for (var i = 0; i < arr.length; i++) {
-      if ( arr[i].race === "Other") {
+      if ( arr[i].race === race) {
         count++;
       }
     }
@@ -87,7 +49,9 @@ class PieChartEthnicityGraph extends PureComponent {
       { name: "White", value: this.state.whiteCount },
       { name: "Asian", value: this.state.asianCount},
       { name: "Black", value: this.state.blackCount},
-      { name: "Latino", value: this.state.latinoCount},
+      { name: "Hispanic or Latino", value: this.state.latinoCount},
+      { name: "Native American", value: this.state.nativeCount},
+      { name: "Pacific Islander", value: this.state.pacificIslanderCount},
       { name: "Other", value: this.state.otherCount},
     ];
     this.setState({realData: newData});
@@ -96,21 +60,24 @@ class PieChartEthnicityGraph extends PureComponent {
   async componentDidMount(){
     try {
       await axios
-        .get("/api/students")
+        .get("/api/personas")
         .then(res => {
           const data = res.data;
-          const whiteNum = this.getWhiteCount(data);
-          const asianNum = this.getAsianCount(data);
-          const blackNum = this.getBlackCount(data);
-          const latinoNum = this.getLatinoCount(data);
-          const otherRaceNum = this.getOtherRaceCount(data);
+          const whiteNum = this.getRaceOrEthnicityCount(data, "White");
+          const asianNum = this.getRaceOrEthnicityCount(data, "Asian");
+          const blackNum = this.getRaceOrEthnicityCount(data, "Black");
+          const latinoNum = this.getRaceOrEthnicityCount(data, "Hispanic or Latino");
+          const nativeNum = this.getRaceOrEthnicityCount(data, "Native American");
+          const pacificIslandNum = this.getRaceOrEthnicityCount(data, "Pacific Islander");
+          const otherRaceNum = this.getRaceOrEthnicityCount(data, "Other");
           this.setState({size: Object.keys(data).length});
           this.setState({whiteCount: whiteNum});
           this.setState({asianCount: asianNum});
           this.setState({blackCount: blackNum});
           this.setState({latinoCount: latinoNum});
+          this.setState({nativeCount: nativeNum});
+          this.setState({pacificIslanderCount: pacificIslandNum});
           this.setState({otherCount: otherRaceNum});
-        
         })
         .catch(err => { console.log(err)});
       await this.formData();

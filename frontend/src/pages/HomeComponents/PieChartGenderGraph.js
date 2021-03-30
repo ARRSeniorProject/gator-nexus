@@ -30,30 +30,10 @@ class PieChartGenderGraph extends PureComponent {
     }
   }
 
-  getMaleCount(arr) {
+  getGenderCount(arr, gen) {
     var count = 0;
     for (var i = 0; i < arr.length; i++) {
-      if ( arr[i].gender === "male") {
-        count++;
-      }
-    }
-    return count;
-  }
-
-  getFemaleCount(arr) {
-    var count = 0;
-    for (var i = 0; i < arr.length; i++) {
-      if (arr[i].gender === "female") {
-        count++;
-      }
-    }
-    return count;
-  }
-
-  getOtherGenderCount(arr) {
-    var count = 0;
-    for (var i = 0; i < arr.length; i++) {
-      if (arr[i].gender === "other") {
+      if (arr[i].gender === gen) {
         count++;
       }
     }
@@ -72,12 +52,12 @@ class PieChartGenderGraph extends PureComponent {
   async componentDidMount(){
     try {
       await axios
-        .get("/api/students")
+        .get("/api/personas")
         .then(res => {
           const data = res.data;
-          const maleNum = this.getMaleCount(data);
-          const femaleNum = this.getFemaleCount(data);
-          const otherNum = this.getOtherGenderCount(data);
+          const maleNum = this.getGenderCount(data, "Male");
+          const femaleNum = this.getGenderCount(data, "Female");
+          const otherNum = this.getGenderCount(data, "Other");
           this.setState({size: Object.keys(data).length});
           this.setState({maleCount: maleNum});
           this.setState({femaleCount: femaleNum});
