@@ -46,7 +46,7 @@ const PersonaSchema = new Schema({
     },
     gender: {
         type: String,
-        enum: ['Male', 'Female', 'Non-Binary'],
+        enum: ['Male', 'Female', 'Other'],
         required: [true, 'Gender is required']
     },
     householdIncome: {

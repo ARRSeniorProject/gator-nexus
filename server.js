@@ -6,6 +6,7 @@ const path = require('path');
 const items = require('./routes/api/items');
 const personas = require('./routes/api/personas');
 const aggregate = require('./routes/api/aggregate');
+const students = require('./routes/api/students');
 
 // Middleware
 const app = express();
@@ -25,19 +26,8 @@ mongoose.connect(db, {useCreateIndex: true, useNewUrlParser: true, useUnifiedTop
 // Use Routes
 app.use('/api/items', items);
 app.use('/api/personas', personas);
+app.use('/api/students', students);
 app.use('/api/aggregate', aggregate);
-
-/*app.get('/', (req, res) => {
-  res.send('Index');
-});
-
-app.get("/message", async (req, res, next) => {
-  try {
-    res.status(201).json({ message: "HELLOOOOO FROM EXPRESS" });
-  } catch (err) {
-    next(err);
-  }
-}); */
 
 
 // Serve static assets if in production
