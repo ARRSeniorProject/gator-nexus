@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import axios from 'axios';
 import { PieChart, Pie, Cell, Legend } from 'recharts';
 
-const COLORS = ['#0088FE', '#C4270C', '#FFBB28', '#FF8042'];
+const COLORS = ['#0088FE', '#C4270C', '#700785', '#FF8042'];
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {

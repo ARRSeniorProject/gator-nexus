@@ -6,8 +6,10 @@ import PieChartGenderGraph from "./PieChartGenderGraph";
 
 import BarChartAcademicStandingInternshipGraph from "./BarChartAcademicStandingInternshipGraph";
 import BarChartGenderInternshipGraph from "./BarChartGenderInternshipGraph";
+import BarChartRaceInternshipGraph from "./BarChartRaceInternship";
 
 import ScatterChartGPAHouseholdIncomeGraph from "./ScatterChartGPAHouseholdIncomeGraph";
+import ScatterChartGPAHouseholdIncomeGenderGraph from "./ScatterChartGPAHouseholdIncomeGenderGraph";
 
 
 
@@ -36,10 +38,18 @@ const GraphGrid = () => {
         <h3>Internship Participation By Gender</h3>
         <BarChartGenderInternshipGraph className="graph"/>
       </div>
+      <div className="graph-wrap">
+        <h3>Internship Participation By Race</h3>
+        <BarChartRaceInternshipGraph className="graph"/>
+      </div>
 
       <div className="graph-wrap">
         <h3>GPA vs Family Income</h3>
         <ScatterChartGPAHouseholdIncomeGraph className="graph"/>
+      </div>
+      <div className="graph-wrap">
+        <h3>GPA, Family Income, Gender</h3>
+        <ScatterChartGPAHouseholdIncomeGenderGraph className="graph"/>
       </div>
     </div>
   )

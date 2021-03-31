@@ -17,20 +17,10 @@ class BarChartGenderInternshipGraph extends PureComponent {
     }
   }
 
-  getInternshipTrueCount(arr, gen) {
+  getInternshipCount(arr, bool, gen) {
     var count = 0;
     for (var i = 0; i < arr.length; i++) {
-      if (arr[i].hasJob === true && arr[i].gender === gen) {
-        count++;
-      }
-    }
-    return count;
-  }
-
-  getInternshipFalseCount(arr, gen) {
-    var count = 0;
-    for (var i = 0; i < arr.length; i++) {
-      if (arr[i].hasJob === false && arr[i].gender === gen) {
+      if (arr[i].hasJob === bool && arr[i].gender === gen) {
         count++;
       }
     }
@@ -58,12 +48,12 @@ class BarChartGenderInternshipGraph extends PureComponent {
         .get("/api/personas")
         .then(res => {
           const data = res.data;
-          const maleTrue = this.getInternshipTrueCount(data, "Male");
-          const maleFalse = this.getInternshipFalseCount(data, "Male");
-          const femaleTrue = this.getInternshipTrueCount(data, "Female");
-          const femaleFalse = this.getInternshipFalseCount(data, "Female");
-          const otherTrue = this.getInternshipTrueCount(data, "Other");
-          const falseFalse = this.getInternshipFalseCount(data, "Other");
+          const maleTrue = this.getInternshipCount(data, true, "Male");
+          const maleFalse = this.getInternshipCount(data, false, "Male");
+          const femaleTrue = this.getInternshipCount(data, true, "Female");
+          const femaleFalse = this.getInternshipCount(data, false, "Female");
+          const otherTrue = this.getInternshipCount(data, true, "Other");
+          const falseFalse = this.getInternshipCount(data, false, "Other");
           this.setState({size: Object.keys(data).length});
           this.setState({maleInternshipTrue: maleTrue});
           this.setState({maleInternshipFalse: maleFalse});
