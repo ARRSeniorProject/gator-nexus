@@ -3,7 +3,9 @@ const mongoose = require('mongoose');
 const path = require('path');
 
 // Routes
-const items = require('./routes/api/items');
+const personas = require('./routes/api/personas');
+const aggregate = require('./routes/api/aggregate');
+const students = require('./routes/api/students');
 
 // Middleware
 const app = express();
@@ -17,18 +19,13 @@ const db = process.env.MONGO_URI;
 
 // Connect to Mongo
 mongoose.connect(db, {useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true})
-  .then(() => console.log('MongoDB Connected...'))
+  .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
 
 // Use Routes
-app.use('/api/items', items);
-app.get("/api/message", async (req, res, next) => {
-  try {
-    res.status(201).json({ message: "HELLOOOOO FROM EXPRESS" });
-  } catch (err) {
-    next(err);
-  }
-});
+app.use('/api/personas', personas);
+app.use('/api/students', students);
+app.use('/api/aggregate', aggregate);
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
@@ -36,6 +33,10 @@ if (process.env.NODE_ENV === 'production') {
 	app.use(express.static('frontend/build'));
   app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname + 'frontend/build/index.html'))
+  });
+} else {
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname + 'frontend/public/index.html'))
   });
 }
 
