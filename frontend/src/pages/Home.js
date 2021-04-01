@@ -1,10 +1,12 @@
 import React from 'react';
-import PieChart from './HomeComponents/PieChart';
+import GeneralInfo from './HomeComponents/GeneralInfo';
+import GraphGrid from './HomeComponents/GraphGrid';
 
 function Home() {
   return (
     <div className='home-container'>
-      <PieChart />
+      <GeneralInfo />
+      <GraphGrid />
     </div>
   )
 }

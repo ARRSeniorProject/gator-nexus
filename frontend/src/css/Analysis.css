@@ -1,0 +1,50 @@
+.analysis {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-right: 20px;
+    padding-left: 20px;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    margin: 5px;
+    display: inline-block;
+    font-size: small;
+    background-color: white;
+    color: #656565;
+    transition: 0.3s;
+    border-radius: 1%;
+    box-shadow: 1px 3px 1px #65656555;
+}
+
+#text {
+    color: #C4C4C4;
+}
+
+.skill-card {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-right: 20px;
+    padding-left: 20px;
+    text-align: center;
+    margin: 5px;
+    float: left;
+    font-size: small;
+    background-color: #ABCDEB;
+    color: #4A8FE099;
+    transition: 0.3s;
+    border-radius: 3%;
+}
+
+.Col {
+    text-align: center;
+    align-items: center;
+    display: flex;
+}
+
+.Row {
+    display: flex;
+}
+
+.Container {
+    display: flex;
+}
