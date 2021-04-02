@@ -18,7 +18,7 @@ class Analysis extends Component {
       axios.get('/api/aggregate').then(res => {
         var data = [];
         data = res.data;
-        console.log(res);
+        console.log(data);
         this.setState({data});
       })
     }
