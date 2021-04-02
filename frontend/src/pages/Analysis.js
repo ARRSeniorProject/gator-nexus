@@ -1,8 +1,31 @@
+import axios from 'axios';
 import React, {Component} from 'react';
 import {Container, Row, Col} from 'reactstrap';
 import '../css/Analysis.css';
 
 class Analysis extends Component {
+
+  constructor() {
+    super();
+
+    this.state = {
+      data: []
+    }
+  }
+
+  async componentDidMount() {
+    try {
+      axios.get('/api/aggregate').then(res => {
+        var data = [];
+        data = res.data;
+        console.log(data);
+        this.setState({data});
+      })
+    }
+    catch(e) {
+      console.log(e);
+    }
+  }
 
   render() {
 
