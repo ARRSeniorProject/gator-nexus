@@ -7,7 +7,7 @@ import PieChartGenderGraph from "./PieChartGenderGraph";
 import BarChartAcademicStandingInternshipGraph from "./BarChartAcademicStandingInternshipGraph";
 import BarChartGenderInternshipGraph from "./BarChartGenderInternshipGraph";
 
-import ScatterChartGraph from "./ScatterChartGraph";
+import ScatterChartGPAHouseholdIncomeGraph from "./ScatterChartGPAHouseholdIncomeGraph";
 
 
 
@@ -39,7 +39,7 @@ const GraphGrid = () => {
 
       <div className="graph-wrap">
         <h3>GPA vs Family Income</h3>
-        <ScatterChartGraph className="graph"/>
+        <ScatterChartGPAHouseholdIncomeGraph className="graph"/>
       </div>
     </div>
   )

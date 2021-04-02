@@ -9,20 +9,24 @@ class BarChartAcademicStandingInternshipGraph extends PureComponent {
     this.state = {
       realData: [],
       year1_InternshipTrue: 0,
-      year1_IternshipFalse: 0,
+      year1_InternshipFalse: 0,
       year2_InternshipTrue: 0,
-      year2_IternshipFalse: 0,
+      year2_InternshipFalse: 0,
       year3_InternshipTrue: 0,
-      year3_IternshipFalse: 0,
+      year3_InternshipFalse: 0,
       year4_InternshipTrue: 0,
-      year4_IternshipFalse: 0
+      year4_InternshipFalse: 0,
+      year5_InternshipTrue: 0,
+      year5_InternshipFalse: 0,
+      year6_InternshipTrue: 0,
+      year6_InternshipFalse: 0
     }
   }
 
   getInternshipTrueCount(arr, year) {
     var count = 0;
     for (var i = 0; i < arr.length; i++) {
-      if (arr[i].internship === true && arr[i].academicstanding === year) {
+      if (arr[i].hasJob === true && arr[i].academicStanding === year) {
         count++;
       }
     }
@@ -32,7 +36,7 @@ class BarChartAcademicStandingInternshipGraph extends PureComponent {
   getInternshipFalseCount(arr, year) {
     var count = 0;
     for (var i = 0; i < arr.length; i++) {
-      if (arr[i].internship === false && arr[i].academicstanding === year) {
+      if (arr[i].hasJob === false && arr[i].academicStanding === year) {
         count++;
       }
     }
@@ -43,16 +47,22 @@ class BarChartAcademicStandingInternshipGraph extends PureComponent {
     const newData = [
       { name: "Year 1", 
         yes: this.state.year1_InternshipTrue, 
-        no: this.state.year1_IternshipFalse },
+        no: this.state.year1_InternshipFalse },
       { name: "Year 2", 
         yes: this.state.year2_InternshipTrue, 
-        no: this.state.year2_IternshipFalse },
+        no: this.state.year2_InternshipFalse },
       { name: "Year 3", 
         yes: this.state.year3_InternshipTrue, 
-        no: this.state.year3_IternshipFalse },
+        no: this.state.year3_InternshipFalse },
       { name: "Year 4", 
         yes: this.state.year4_InternshipTrue, 
-        no: this.state.year4_IternshipFalse },
+        no: this.state.year4_InternshipFalse },
+      { name: "Year 5", 
+        yes: this.state.year5_InternshipTrue, 
+        no: this.state.year5_InternshipFalse },
+      { name: "Year 6", 
+        yes: this.state.year6_InternshipTrue, 
+        no: this.state.year6_InternshipFalse }
     ];
     this.setState({realData: newData});
   }
@@ -60,7 +70,7 @@ class BarChartAcademicStandingInternshipGraph extends PureComponent {
   async componentDidMount(){
     try {
       await axios
-        .get("/api/students")
+        .get("/api/personas")
         .then(res => {
           const data = res.data;
           const yr1_True = this.getInternshipTrueCount(data, 1);
@@ -71,16 +81,24 @@ class BarChartAcademicStandingInternshipGraph extends PureComponent {
           const yr3_False = this.getInternshipFalseCount(data, 3);
           const yr4_True = this.getInternshipTrueCount(data, 4);
           const yr4_False = this.getInternshipFalseCount(data, 4);
+          const yr5_True = this.getInternshipTrueCount(data, 5);
+          const yr5_False = this.getInternshipFalseCount(data, 5);
+          const yr6_True = this.getInternshipTrueCount(data, 6);
+          const yr6_False = this.getInternshipFalseCount(data, 6);
 
           this.setState({size: Object.keys(data).length});
           this.setState({year1_InternshipTrue: yr1_True});
-          this.setState({year1_IternshipFalse: yr1_False});
+          this.setState({year1_InternshipFalse: yr1_False});
           this.setState({year2_InternshipTrue: yr2_True});
-          this.setState({year2_IternshipFalse: yr2_False});
+          this.setState({year2_InternshipFalse: yr2_False});
           this.setState({year3_InternshipTrue: yr3_True});
-          this.setState({year3_IternshipFalse: yr3_False});
+          this.setState({year3_InternshipFalse: yr3_False});
           this.setState({year4_InternshipTrue: yr4_True});
-          this.setState({year4_IternshipFalse: yr4_False});
+          this.setState({year4_InternshipFalse: yr4_False});
+          this.setState({year5_InternshipTrue: yr5_True});
+          this.setState({year5_InternshipFalse: yr5_False});
+          this.setState({year6_InternshipTrue: yr6_True});
+          this.setState({year6_InternshipFalse: yr6_False});
         })
         .catch(err => { console.log(err)});
       await this.formData();

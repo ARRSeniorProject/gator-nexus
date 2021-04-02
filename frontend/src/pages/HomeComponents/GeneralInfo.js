@@ -13,7 +13,7 @@ class GeneralInfo extends PureComponent {
   async componentDidMount(){
     try {
       await axios
-        .get("/api/students")
+        .get("/api/personas")
         .then(res => {
           const data = res.data;
           this.setState({size: Object.keys(data).length});
