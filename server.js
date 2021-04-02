@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const path = require('path');
 
 // Routes
-const items = require('./routes/api/items');
 const personas = require('./routes/api/personas');
 const aggregate = require('./routes/api/aggregate');
 const students = require('./routes/api/students');
@@ -24,11 +23,9 @@ mongoose.connect(db, {useCreateIndex: true, useNewUrlParser: true, useUnifiedTop
   .catch(err => console.log(err));
 
 // Use Routes
-app.use('/api/items', items);
 app.use('/api/personas', personas);
 app.use('/api/students', students);
 app.use('/api/aggregate', aggregate);
-
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
