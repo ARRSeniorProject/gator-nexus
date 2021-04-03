@@ -15,6 +15,8 @@ import ScatterChartGPAHouseholdIncomeRaceGraph from "./ScatterChartGPAHouseholdI
 
 import AreaChartGPAFrequencyGraph from "./AreaChartGPAFrequencyGraph";
 
+import VerticalBarChartRace from "./VerticalBarChartRace";
+
 class GraphGrid extends Component {
   constructor(props) {
     super(props);
@@ -84,6 +86,11 @@ class GraphGrid extends Component {
         <div className="graph-wrap">
           <h3>Area Chart</h3>
           <AreaChartGPAFrequencyGraph className="graph"/>
+        </div>
+
+        <div className="graph-wrap">
+          <h3>Race/Ethncity</h3>
+          <VerticalBarChartRace className="graph"/>
         </div>
       </div>
     )
