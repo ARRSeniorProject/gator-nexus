@@ -1,14 +1,13 @@
 import axios from 'axios';
 import React, { PureComponent } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 
-class BarChartAcademicStandingInternshipGraph extends PureComponent {
+class AreaChartGPAFrequencyGraph extends PureComponent {
   constructor(props) {
     super(props);
 
     this.state = {
       realData: [],
-      inheritedData: [],
       year1_InternshipTrue: 0,
       year1_InternshipFalse: 0,
       year2_InternshipTrue: 0,
@@ -24,10 +23,20 @@ class BarChartAcademicStandingInternshipGraph extends PureComponent {
     }
   }
 
-  getInternshipCount(arr, bool, year) {
+  getInternshipTrueCount(arr, year) {
     var count = 0;
     for (var i = 0; i < arr.length; i++) {
-      if (arr[i].hasJob === bool && arr[i].academicStanding === year) {
+      if (arr[i].hasJob === true && arr[i].academicStanding === year) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  getInternshipFalseCount(arr, year) {
+    var count = 0;
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i].hasJob === false && arr[i].academicStanding === year) {
         count++;
       }
     }
@@ -56,7 +65,6 @@ class BarChartAcademicStandingInternshipGraph extends PureComponent {
         no: this.state.year6_InternshipFalse }
     ];
     this.setState({realData: newData});
-    this.setState({inheritedData: this.props.passedData});
   }
 
   async componentDidMount(){
@@ -65,18 +73,18 @@ class BarChartAcademicStandingInternshipGraph extends PureComponent {
         .get("/api/personas")
         .then(res => {
           const data = res.data;
-          const yr1_True = this.getInternshipCount(data, true, 1);
-          const yr1_False = this.getInternshipCount(data, false, 1);
-          const yr2_True = this.getInternshipCount(data, true, 2);
-          const yr2_False = this.getInternshipCount(data, false, 2);
-          const yr3_True = this.getInternshipCount(data, true, 3);
-          const yr3_False = this.getInternshipCount(data, false, 3);
-          const yr4_True = this.getInternshipCount(data, true, 4);
-          const yr4_False = this.getInternshipCount(data, false, 4);
-          const yr5_True = this.getInternshipCount(data, true, 5);
-          const yr5_False = this.getInternshipCount(data, false, 5);
-          const yr6_True = this.getInternshipCount(data, true, 6);
-          const yr6_False = this.getInternshipCount(data, false, 6);
+          const yr1_True = this.getInternshipTrueCount(data, 1);
+          const yr1_False = this.getInternshipFalseCount(data, 1);
+          const yr2_True = this.getInternshipTrueCount(data, 2);
+          const yr2_False = this.getInternshipFalseCount(data, 2);
+          const yr3_True = this.getInternshipTrueCount(data, 3);
+          const yr3_False = this.getInternshipFalseCount(data, 3);
+          const yr4_True = this.getInternshipTrueCount(data, 4);
+          const yr4_False = this.getInternshipFalseCount(data, 4);
+          const yr5_True = this.getInternshipTrueCount(data, 5);
+          const yr5_False = this.getInternshipFalseCount(data, 5);
+          const yr6_True = this.getInternshipTrueCount(data, 6);
+          const yr6_False = this.getInternshipFalseCount(data, 6);
 
           this.setState({size: Object.keys(data).length});
           this.setState({year1_InternshipTrue: yr1_True});
@@ -94,8 +102,6 @@ class BarChartAcademicStandingInternshipGraph extends PureComponent {
         })
         .catch(err => { console.log(err)});
       await this.formData();
-      
-      console.log(console.log(this.state.inheritedData));
     } catch (error) {
       console.log(error)
     }
@@ -105,7 +111,7 @@ class BarChartAcademicStandingInternshipGraph extends PureComponent {
     return (
       <>
       {this.state.realData.length > 0 && (
-        <BarChart
+        <AreaChart
           width={500}
           height={300}
           data={this.state.realData}
@@ -121,14 +127,13 @@ class BarChartAcademicStandingInternshipGraph extends PureComponent {
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
-          <Legend align="center" verticalAlign="bottom" />
-          <Bar dataKey="yes" fill="#326fa8" />
-          <Bar dataKey="no" fill="#c73126" />
-        </BarChart>
+          <Area type="monotone" dataKey="yes" stoke="#326fa8" fill="#326fa8" />
+          <Area type="monotone" dataKey="no" stoke="#c73126" fill="#c73126" />
+        </AreaChart>
       )}
       </>
     );
   }
 }
 
-export default BarChartAcademicStandingInternshipGraph;
+export default AreaChartGPAFrequencyGraph;
