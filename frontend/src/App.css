@@ -7,7 +7,10 @@
   font-family: "Montserrat", "sans-serif";
 }
 
-.home-container,
+/*Leave blank*/
+.home-container {
+}
+
 .directory-container,
 .newprofile-container {
   display: flex;
@@ -24,7 +27,6 @@
   margin: 5px;
 }
 
-.home-container,
 .directory-container,
 .analysis-container {
   display: flex;

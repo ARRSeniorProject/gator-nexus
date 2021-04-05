@@ -49,7 +49,7 @@ class GraphGrid extends Component {
           <PieChartInternshipGraph passedData={this.state.masterData} className="graph"/>
         </div>
         <div className="graph-wrap">
-          <h3>Ethncity</h3>
+          <h3>Ethnicity</h3>
           <PieChartEthnicityGraph className="graph"/>
         </div>
         <div className="graph-wrap">
@@ -88,10 +88,7 @@ class GraphGrid extends Component {
           <AreaChartGPAFrequencyGraph className="graph"/>
         </div>
 
-        <div className="graph-wrap">
-          <h3>Race/Ethncity</h3>
-          <VerticalBarChartRace className="graph"/>
-        </div>
+        
       </div>
     )
   }
