@@ -5,7 +5,8 @@ const path = require('path');
 // Routes
 const personas = require('./routes/api/personas');
 const aggregate = require('./routes/api/aggregate');
-const students = require('./routes/api/students');
+const profile = require('./routes/api/profile')
+
 
 // Middleware
 const app = express();
@@ -24,8 +25,8 @@ mongoose.connect(db, {useCreateIndex: true, useNewUrlParser: true, useUnifiedTop
 
 // Use Routes
 app.use('/api/personas', personas);
-app.use('/api/students', students);
 app.use('/api/aggregate', aggregate);
+app.use('/api/profile-picture', profile);
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {

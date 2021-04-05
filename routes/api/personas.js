@@ -24,7 +24,7 @@ router.post('/', (req, res) => {
             email: element.email,
             hasJob: "company" in element,
             hasContactInfo: ("phoneNumber" in element) || ("email" in element),
-            profilePictureLink: `https://avatars.dicebear.com/api/jdenticon/${Math.random().toString(36).substr(2, 8)}.svg`
+            profilePictureLink: ("profilePictureLink" in element) ? element.profilePictureLink : `https://avatars.dicebear.com/api/jdenticon/${Math.random().toString(36).substr(2, 8)}.svg`
         }));
         Persona.insertMany(multiplePersonas)
         .then(docs => res.json(docs))
@@ -32,7 +32,8 @@ router.post('/', (req, res) => {
     }
     else {
         let profileSeed = Math.random().toString(36).substr(2, 8);
-        let profilePictureLink = `https://avatars.dicebear.com/api/jdenticon/${profileSeed}.svg`
+        let hasProfilePicture = "profilePictureLink" in req.body;
+        let profilePictureLink = (hasProfilePicture ? req.body.profilePictureLink : `https://avatars.dicebear.com/api/jdenticon/${profileSeed}.svg`);
         let hasJob = "company" in req.body;
         let hasContactInfo = ("phoneNumber" in req.body) || ("email" in req.body);
         const newPersona = new Persona({

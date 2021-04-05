@@ -1,9 +1,11 @@
 import React from 'react';
+import NewProfileForm from '../components/NewProfileForm';
+//import { makeStyles, Paper } from '@material-ui/core';
 
 function NewProfile() {
   return (
     <div className='newprofile-container'>
-      <h1>New Profile</h1>
+      <NewProfileForm />
     </div>
   )
 }

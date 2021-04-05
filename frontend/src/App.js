@@ -49,7 +49,7 @@ class App extends Component {
             <Route path="/" exact component={Home}/>
             <Route path="/api/directory" exact component={() => <Directory handlechange={this.handlechange} state={this.state}/>}/>
             <Route path="/api/analysis" exact component={Analysis} />
-            <Route path="/api/newprofile" exact component={NewProfile} />
+            <Route path="/newprofile" exact component={NewProfile} />
           </Switch>
         </Router>
       </div>
