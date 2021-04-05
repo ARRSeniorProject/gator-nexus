@@ -17,7 +17,7 @@ const s3 = new aws.S3({
 const profilePictureUpload = multer({
     storage: multerS3({
         s3: s3,
-        bucket: 'gatornexus',
+        bucket: 'gator-nexus',
         acl: 'public-read',
         key: (req, file, cb) => {
             cb(null, path.basename(file.originalname, path.extname(file.originalname)) + '-' + Date.now() + path.extname(file.originalname))

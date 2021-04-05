@@ -1,6 +1,6 @@
 import React from 'react';
 import NewProfileForm from '../components/NewProfileForm';
-import { makeStyles, Paper } from '@material-ui/core';
+//import { makeStyles, Paper } from '@material-ui/core';
 
 function NewProfile() {
   return (

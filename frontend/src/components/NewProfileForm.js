@@ -1,21 +1,34 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import axios from 'axios';
 import $ from 'jquery';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import { TextField } from '@material-ui/core';
+//import Card from '@material-ui/core/Card';
+//import CardActionArea from '@material-ui/core/CardActionArea';
+//import CardActions from '@material-ui/core/CardActions';
+//import CardContent from '@material-ui/core/CardContent';
+//import Typography from '@material-ui/core/Typography';
+//import Button from '@material-ui/core/Button';
+//import Grid from '@material-ui/core/Grid';
+//import { TextField } from '@material-ui/core';
 
 class NewProfileForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedFile: null,
-            selectedFiles: null
+            gender: '',
+            race: '',
+            age: 0,
+            householdIncome: 0,
+            employmentStatus: 0,
+            phoneNumber: '',
+            email: '',
+            company: '',
+            academicStanding: 0,
+            major: '',
+            minor: '',
+            gpa: 0,
+            interviewPreparationTime: 0,
+            skills: [],
+            profilePicture: null
         }
     }
 
@@ -35,14 +48,32 @@ class NewProfileForm extends Component {
 
     fileChangedHandler = (event) => {
         this.setState({
-            selectedFile: event.target.files[0]
+            profilePicture: event.target.files[0]
         });
     };
 
-    fileUploadHandler = () => {
+    onSubmit = (event) => {
+        event.preventDefault();
+        console.log(this.state);
         const data = new FormData();
-        if(this.state.selectedFile) {
-            data.append('profilePicture', this.state.selectedFile, this.state.selectedFile.name);
+        if(this.state.profilePicture) {
+            data.append('profilePicture', this.state.profilePicture, this.state.profilePicture.name);
+            var newProfile = {
+                gender: this.state.gender,
+                race: this.state.race,
+                age: this.state.age,
+                householdIncome: this.state.householdIncome,
+                employmentStatus: this.state.employmentStatus,
+                academicStanding: this.state.academicStanding,
+                major: this.state.major,
+                gpa: this.state.gpa,
+                interviewPreparationTime: this.state.interviewPreparationTime,
+                skills: ['Python', 'Java', 'C++']
+            }
+            var company = this.state.company;
+            var minor = this.state.minor;
+            var phoneNumber = this.state.phoneNumber;
+            var email = this.state.email;
             axios.post('/api/profile-picture/upload', data, {
                 headers: {
                     'accept': 'application/json',
@@ -54,92 +85,162 @@ class NewProfileForm extends Component {
                 if(res.status === 200) {
                     if(res.data.error) {
                         if(res.data.error.code === 'LIMIT_FILE_SIZE') {
-                            this.ocShowAlert('Max size: 2MB', 'red');
+                            console.log('Max size: 2MB');
                         } 
                         else {
-                            this.ocShowAlert(res.data.error, 'red');
+                            console.log(res.data.error);
                         }
                     } 
                     else {
-                        this.ocShowAlert('File Uploaded', '#3089cf');
+                        console.log('File Uploaded');
+                        console.log(res);
+                        if(company != "") {
+                            newProfile.company = company;
+                        }
+                        if(minor != "") {
+                            newProfile.minor = minor;
+                        }
+                        if(phoneNumber != "") {
+                            newProfile.phoneNumber = phoneNumber;
+                        }
+                        if(email != "") {
+                            newProfile.email = email;
+                        }
+                        axios.post('/api/personas', newProfile).then(res => console.log(res.data));
                     }
                 }
             }).catch((error) => {
-                this.ocShowAlert(error, 'red');
+                console.log(error);
             });
         } 
         else {
-            this.ocShowAlert('Please upload file', 'red');
+            console.log('Please upload file');
         }
+        this.setState({
+            gender: '',
+            race: '',
+            age: 0,
+            householdIncome: 0,
+            employmentStatus: 0,
+            phoneNumber: '',
+            email: '',
+            company: '',
+            academicStanding: 0,
+            major: '',
+            minor: '',
+            gpa: 0,
+            interviewPreparationTime: 0,
+            skills: [],
+            profilePicture: null
+        });
+    };
+
+    change = (event) => {
+        this.setState({
+            [event.target.name]: event.target.value
+        })
     };
 
     render() {
         return(
             <div>
+                <h1>Enter in your Information</h1>
                 <form>
-                    <Grid container direction="row" justify="flex-start" alignItems="flex-start" spacing={1}>
-                        <Grid container xs={12} spacing={1}>
-                            <Grid item>
-                                <TextField label="Major" variant="outlined" />
-                            </Grid>
-                            <Grid item>
-                                <TextField label="Minor" variant="outlined" />
-                            </Grid>
-                            <Grid item>
-                                <TextField label="GPA" variant="outlined" style={{width: '50%'}} />
-                            </Grid>
-                        </Grid>
-                        <Grid container xs={12} spacing={1}>
-                            <Grid item>
-                                <TextField label="Academic Standing" variant="outlined" style={{width: '75%'}} />
-                            </Grid>
-                            <Grid item sm={5}>
-                                <TextField label="Skills" variant="outlined" style={{width: '25%'}} />
-                            </Grid>
-                        </Grid>
-                        <Grid item xs={8}>
-                            <TextField label="Company" variant="outlined" />
-                        </Grid>
-                        <Grid item xs={2}>
-                            <TextField label="Employment Status" variant="outlined" />
-                        </Grid>
-                        <Grid item xs={2}>
-                            <TextField label="Interview Preparation Time" variant="outlined" />
-                        </Grid>
-                    </Grid>
+                    <h3>Personal Information</h3>
+                    <select name="race" onChange={e => this.change(e)}>
+                        <option value="">---</option>
+                        <option value="White">White</option>
+                        <option value="Black">Black</option>
+                        <option value="Hispanic or Latino">Hispanic or Latino</option>
+                        <option value="Native American">Native American</option>
+                        <option value="Asian">Asian</option>
+                        <option value="Pacific Islander">Pacific Islander</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <select name="gender" onChange={e => this.change(e)}>
+                        <option value="">---</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <br />
+                    <input 
+                    name="age"
+                    placeholder='Age'
+                    value={this.state.age}
+                    onChange={e => this.change(e)} 
+                    />
+                    <input 
+                    name="householdIncome"
+                    placeholder='Household Income'
+                    value={this.state.householdIncome}
+                    onChange={e => this.change(e)} 
+                    />
+                    <input 
+                    name="employmentStatus"
+                    placeholder='Employment Status'
+                    value={this.state.employmentStatus}
+                    onChange={e => this.change(e)} 
+                    />
+                    <br />
+                    <input 
+                    name="phoneNumber"
+                    placeholder='Phone Number'
+                    value={this.state.phoneNumber}
+                    onChange={e => this.change(e)} 
+                    />
+                    <input 
+                    name="email"
+                    placeholder='Email'
+                    value={this.state.email}
+                    onChange={e => this.change(e)} 
+                    />
+                    <br />
+                    <input 
+                    type="file"
+                    onChange={this.fileChangedHandler} 
+                    />
+                    <h3>Professional Information</h3>
+                    <input 
+                    name="company"
+                    placeholder='Company'
+                    value={this.state.company}
+                    onChange={e => this.change(e)} 
+                    />
+                    <br />
+                    <input 
+                    name="academicStanding"
+                    placeholder='Academic Standing'
+                    value={this.state.academicStanding}
+                    onChange={e => this.change(e)} 
+                    />
+                    <input 
+                    name="major"
+                    placeholder='Major'
+                    value={this.state.major}
+                    onChange={e => this.change(e)} 
+                    />
+                    <input 
+                    name="minor"
+                    placeholder='Minor'
+                    value={this.state.minor}
+                    onChange={e => this.change(e)} 
+                    />
+                    <input 
+                    name="gpa"
+                    placeholder='GPA'
+                    value={this.state.gpa}
+                    onChange={e => this.change(e)} 
+                    />
+                    <input 
+                    name="interviewPreparationTime"
+                    placeholder='Interview Preparation Time'
+                    value={this.state.interviewPreparationTime}
+                    onChange={e => this.change(e)} 
+                    />
+                    <br />
+                    <button onClick={e => this.onSubmit(e)}>Submit</button>
                 </form>
-                {/*<Card>
-                    <CardActionArea>
-                        <CardContent>
-                            <Typography gutterBottom variant="h5" component="h2">
-                                Upload Profile Picture
-                            </Typography>
-                        </CardContent>
-                    </CardActionArea>
-                    <CardActions>
-                    <Button variant="contained" component="label">
-                        <input type="file" onChange={this.fileChangedHandler}/>
-                    </Button>
-                    <input type="file" onChange={this.fileChangedHandler}/>
-                    <Button size="small" color="primary" onClick={this.fileUploadHandler}>
-                        Save
-                    </Button>
-                    </CardActions>
-                </Card>*/}
-                {/*<div id="oc-alert-container"></div>*/}
-                {/*<div className="card border-light mb-3 mt-5" style={{ boxShadow: '0 5px 10px 2px rgba(195,192,192,.5)' }}>
-                    {/*<div className="card-header">
-                        <h6 style={{ color: '#555', marginLeft: '12px' }}>Image Upload</h6>
-                        <p className="text-muted" style={{ marginLeft: '12px' }}>Upload Size: 250px x 250px (Maximum Size: 2 MB)</p>
-                    </div>
-                    <div className="card-body">
-                        <p className="card-text">Please upload a profile picture</p>
-                        <input type="file" onChange={this.fileChangedHandler}/>
-                        <div className="mt-6">
-                            <button className="btn btn-info" onClick={this.fileUploadHandler}>Upload Image</button>
-                        </div>
-                    </div>
-                </div>*/}
             </div>
         );
     }
