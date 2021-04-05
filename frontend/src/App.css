@@ -26,7 +26,6 @@
 
 .home-container,
 .directory-container,
-.newprofile-container,
 .analysis-container {
   display: flex;
   height: 90vh;

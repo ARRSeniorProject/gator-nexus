@@ -28,13 +28,14 @@ class NewProfileForm extends Component {
             gpa: '',
             interviewPreparationTime: '',
             skills: [],
-            profilePicture: null
+            profilePictureImage: null,
+            profilePictureLink: ''
         }
     } 
 
     fileChangedHandler = (event) => {
         this.setState({
-            profilePicture: event.target.files[0]
+            profilePictureImage: event.target.files[0]
         });
     };
 
@@ -65,8 +66,8 @@ class NewProfileForm extends Component {
             newProfile.email = this.state.email;
         }
         const data = new FormData();
-        if(this.state.profilePicture) {
-            data.append('profilePicture', this.state.profilePicture, this.state.profilePicture.name);
+        if(this.state.profilePictureImage) {
+            data.append('profilePicture', this.state.profilePictureImage, this.state.profilePictureImage.name);
             axios.post('/api/profile-picture/upload', data, {
                 headers: {
                     'accept': 'application/json',
@@ -87,7 +88,7 @@ class NewProfileForm extends Component {
                     else {
                         console.log('File Uploaded');
                         console.log(res.data.location);
-                        newProfile.profilePicture = res.data.location;
+                        newProfile.profilePictureLink = res.data.location;
                         console.log(newProfile);
                         axios.post('/api/personas', newProfile).then(res => console.log(res.data));
                     }
@@ -115,7 +116,8 @@ class NewProfileForm extends Component {
             gpa: '',
             interviewPreparationTime: '',
             skills: [],
-            profilePicture: null
+            profilePictureImage: null,
+            profilePictureLink: ''
         });
     };
 
