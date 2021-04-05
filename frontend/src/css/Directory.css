@@ -12,6 +12,7 @@
     background-color: #f3d7bc70;
     color: #4A8FE099;
     transition: 0.3s;
+    margin: 20px;
 }
 
 .card:hover {
@@ -24,10 +25,12 @@
     text-align: center;
     align-items: center;
     display: flex;
+    padding: 20px;
 }
 
 .Row {
     display: flex;
+    padding: 20px;
 }
 
 .Container {

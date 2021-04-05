@@ -39,10 +39,12 @@
     text-align: center;
     align-items: center;
     display: flex;
+    padding: 50%;
 }
 
 .Row {
     display: flex;
+    padding: 50%;
 }
 
 .Container {

@@ -93,16 +93,14 @@ class Directory extends Component{
                 {arr.length} Results
               </Col>
             </Row>
-            <br></br>
+            <hr></hr>
           </Container>
         </div>
         <div>
         <Container className={this.props.state.sidebar ? 'home active' : 'home'}>
           <Row>
           {arr.map((e, i, a) =>
-            <Row>
-              <Col><Card className='card' value = {e} /></Col>
-            </Row>
+              <Card className='card' value = {e} />
           )}
           </Row>  
         </Container>

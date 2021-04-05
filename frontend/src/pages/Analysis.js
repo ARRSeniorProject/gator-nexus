@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, {Component} from 'react';
+import VerticalBarChartRace from './HomeComponents/VerticalBarChartRace';
 import {Container, Row, Col} from 'reactstrap';
 import '../css/Analysis.css';
 
@@ -150,7 +151,7 @@ class Analysis extends Component {
                 <h3>Ethnicity</h3>
               </Row>
               <Row>
-                <h5 id="text">&nbsp;&nbsp;&nbsp;&nbsp;{this.state.data.races}</h5>
+                <VerticalBarChartRace Style={{height: '100px'}}/>
               </Row>
               <Row>
                 <h3>Age</h3>
