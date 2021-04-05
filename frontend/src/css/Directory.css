@@ -1,0 +1,53 @@
+.card {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-right: 20px;
+    padding-left: 20px;
+    height: 150px;
+    width: 150px;
+    text-align: center;
+    margin: 5px;
+    display: inline-block;
+    font-size: small;
+    background-color: #f3d7bc70;
+    color: #4A8FE099;
+    transition: 0.3s;
+    margin: 20px;
+}
+
+.card:hover {
+    box-shadow: 1px 3px 1px #4A8FE070;
+    transform: scale(1.025);
+    transition-duration: 0.3s;
+}
+
+.Col {
+    text-align: center;
+    align-items: center;
+    display: flex;
+    padding: 20px;
+}
+
+.Row {
+    display: flex;
+    padding: 20px;
+}
+
+.Container {
+    display: flex;
+}
+
+.home {
+    display: list-item;
+    list-style: none;
+    align-items: center;
+    transition: 1s;
+}
+
+#search {
+    align-items: center;
+    text-align: center;
+    display: flex;
+    font-size: medium;
+    color: #7B7474;
+}

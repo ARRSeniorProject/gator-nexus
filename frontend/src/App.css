@@ -17,6 +17,16 @@
   font-size: 1rem;
 }
 
+.general-info {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  margin: 5px;
+}
+
+.home-container,
+.directory-container,
+.newprofile-container,
 .analysis-container {
   display: flex;
   height: 90vh;
@@ -45,4 +55,40 @@
 .fade-exit-active {
   opacity: 0.01;
   transition: opacity 1000, s ease-in;
+}
+
+/* graph grid styles*/
+.graph-grid {
+  margin: 0px auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 40px;
+  margin-bottom: 150px;
+}
+
+.graph-wrap {
+  overflow: visible;
+  height: 0;
+  padding: 15% 0 60% 0;
+  position: relative;
+  opacity: 0.8;
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.graph-wrap > h3 {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 30px;
+}
+
+.graph {
+  min-width: 100%;
+  min-height: 100%;
+  max-width: 150%;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
