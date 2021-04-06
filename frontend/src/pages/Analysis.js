@@ -1,5 +1,8 @@
 import axios from 'axios';
 import React, {Component} from 'react';
+import VerticalBarChartRace from './HomeComponents/VerticalBarChartRace';
+import VerticalBarChartMajor from './HomeComponents/VerticalBarChartMajor';
+import VerticalBarChartGender from './HomeComponents/VerticalBarChartGender';
 import {Container, Row, Col} from 'reactstrap';
 import '../css/Analysis.css';
 
@@ -36,51 +39,6 @@ class Analysis extends Component {
       axios.get('/api/aggregate').then(res => {
         var data = [];
         data = res.data;
-        console.log(data);
-
-        if(data.gender.Male >= data.gender.Female && data.gender.Male >= data.gender.Other)
-          data.gender = "Male";
-        else if(data.gender.Female >= data.gender.Male && data.gender.Female >= data.gender.Other)
-          data.gender = "Female";
-        else if(data.gender.Other >= data.gender.Male && data.gender.Other >= data.gender.Female)
-          data.gender = "Other"
-
-        if(data.races.Asian >= data.races.Black && data.races.Asian >= data.races['Hispanic or Latino'] &&
-        data.races.Asian >= data.races['Native American'] && data.races.Asian >= data.races.Other && 
-        data.races.Asian >= data.races['Pacific Islander'] && data.races.Asian >= data.races.White)
-          data.races = 'Asian';
-        else if(data.races.Black >= data.races.Asian && data.races.Black >= data.races['Hispanic or Latino'] &&
-        data.races.Black >= data.races['Native American'] && data.races.Black >= data.races.Other && 
-        data.races.Black >= data.races['Pacific Islander'] && data.races.Black >= data.races.White)
-          data.races = 'Black';
-        else if(data.races['Hispanic or Latino'] >= data.races.Asian && data.races['Hispanic or Latino'] >= data.races.Black &&
-        data.races['Hispanic or Latino'] >= data.races['Native American'] && data.races['Hispanic or Latino'] >= data.races.Other && 
-        data.races['Hispanic or Latino'] >= data.races['Pacific Islander'] && data.races['Hispanic or Latino'] >= data.races.White)
-          data.races = 'Hispanic or Latino';
-        else if(data.races['Native American'] >= data.races.Asian && data.races['Native American'] >= data.races.Black &&
-        data.races['Native American'] >= data.races['Hispanic or Latino'] && data.races['Native American'] >= data.races.Other && 
-        data.races['Native American'] >= data.races['Pacific Islander'] && data.races['Native American'] >= data.races.White)
-          data.races = 'Native American';
-        else if(data.races.Other >= data.races.Asian && data.races.Other >= data.races.Black &&
-        data.races.Other >= data.races['Hispanic or Latino'] && data.races.Other >= data.races.['Native American'] && 
-        data.races.Other >= data.races['Pacific Islander'] && data.races.Other >= data.races.White)
-          data.races = 'Other';
-        else if(data.races['Pacific Islander'] >= data.races.Asian && data.races['Pacific Islander'] >= data.races.Black &&
-        data.races['Pacific Islander'] >= data.races['Hispanic or Latino'] && data.races['Pacific Islander'] >= data.races.Other && 
-        data.races['Pacific Islander'] >= data.races['Native American'] && data.races['Pacific Islander'] >= data.races.White)
-          data.races = 'Pacific Islander';
-        else if(data.races.White >= data.races.Asian && data.races.White >= data.races.Black &&
-        data.races.White >= data.races['Hispanic or Latino'] && data.races.White >= data.races.Other && 
-        data.races.White >= data.races['Native American'] && data.races.White >= data.races['Pacific Islander'])
-          data.races = 'White';
-
-        if(data.majors['Computer Science'] >= data['Computer Engineering'] && data.majors['Computer Science'] >= data.majors['computer engineering'])
-          data.majors = "Computer Science";
-        else if(data.majors['Computer Engineering'] >= data.majors['Computer Science'] && data.majors['Computer Engineering'] >= data.majors['computer engineering'])
-          data.majors = "Computer Engineering";
-        else if(data.majors['computer engineering'] >= data.majors['Computer Science'] && data.majors['computer engineering'] >= data['Computer Engineering'])
-          data.majors = "computer engineering"
-
         this.setState({data});
       })
     }
@@ -117,7 +75,8 @@ class Analysis extends Component {
                 <h3>Major</h3>
               </Row>
               <Row>
-                <h5 id="text">&nbsp;&nbsp;&nbsp;&nbsp;{this.state.data.majors}</h5>
+                {/* <h5 id="text">&nbsp;&nbsp;&nbsp;&nbsp;{this.state.data.majors}</h5> */}
+                <VerticalBarChartMajor />
               </Row>
               <Row>
                 <h3>Minor</h3>
@@ -150,7 +109,7 @@ class Analysis extends Component {
                 <h3>Ethnicity</h3>
               </Row>
               <Row>
-                <h5 id="text">&nbsp;&nbsp;&nbsp;&nbsp;{this.state.data.races}</h5>
+                <VerticalBarChartRace/>
               </Row>
               <Row>
                 <h3>Age</h3>
@@ -162,7 +121,7 @@ class Analysis extends Component {
                 <h3>Gender</h3>
               </Row>
               <Row>
-                <h5 id="text">&nbsp;&nbsp;&nbsp;&nbsp;{this.state.data.gender}</h5>
+                <VerticalBarChartGender/>
               </Row>
               <Row>
                 <h3>Household Income</h3>
