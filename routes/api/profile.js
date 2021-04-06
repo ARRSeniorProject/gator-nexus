@@ -23,7 +23,7 @@ const profilePictureUpload = multer({
             cb(null, path.basename(file.originalname, path.extname(file.originalname)) + '-' + Date.now() + path.extname(file.originalname))
         }
     }),
-    limits: {fileSize: 2000000},
+    limits: {fileSize: 4000000},
     fileFilter: (req, file, cb) => {
         checkFileType(file, cb);
     }
@@ -41,7 +41,7 @@ function checkFileType(file, cb) {
     }
 }
 
-router.post( '/upload', (req, res) => {
+router.post('/upload', (req, res) => {
     profilePictureUpload(req, res, (error) => {
         if(error) {
             res.json('Error: ' + error);
@@ -51,11 +51,9 @@ router.post( '/upload', (req, res) => {
                 res.json('Error: No File Selected');
             } 
             else {
-                const imageName = req.file.key;
-                const imageLocation = req.file.location;
                 res.json({
-                    image: imageName,
-                    location: imageLocation
+                    image: req.file.key,
+                    location: req.file.location
                 });
             }
         }

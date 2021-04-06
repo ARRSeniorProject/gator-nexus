@@ -31,6 +31,7 @@ class NewProfileForm extends Component {
             profilePictureImage: null,
             profilePictureLink: ''
         }
+        this.profilePictureUpload = React.createRef();
     } 
 
     fileChangedHandler = (event) => {
@@ -79,7 +80,7 @@ class NewProfileForm extends Component {
                 if(res.status === 200) {
                     if(res.data.error) {
                         if(res.data.error.code === 'LIMIT_FILE_SIZE') {
-                            console.log('Max size: 2MB');
+                            console.log('Max size: 3MB');
                         } 
                         else {
                             console.log(res.data.error);
@@ -87,10 +88,8 @@ class NewProfileForm extends Component {
                     } 
                     else {
                         console.log('File Uploaded');
-                        console.log(res.data.location);
                         newProfile.profilePictureLink = res.data.location;
-                        console.log(newProfile);
-                        axios.post('/api/personas', newProfile).then(res => console.log(res.data));
+                        //axios.post('/api/personas', newProfile).then(res => console.log(res.data));
                     }
                 }
             }).catch((error) => {
@@ -99,7 +98,7 @@ class NewProfileForm extends Component {
         } 
         else {
             console.log(newProfile);
-            axios.post('/api/personas', newProfile).then(res => console.log(res.data));
+            //axios.post('/api/personas', newProfile).then(res => console.log(res.data));
         }
         this.setState({
             gender: '',
@@ -119,6 +118,8 @@ class NewProfileForm extends Component {
             profilePictureImage: null,
             profilePictureLink: ''
         });
+        this.profilePictureUpload.current.value = null;
+        console.log('cleared');
     };
 
     change = (event) => {
@@ -134,7 +135,7 @@ class NewProfileForm extends Component {
                 <Form>
                     <FormGroup>
                         <h3>Personal Information</h3>
-                        <Input type="select" name="race" onChange={e => this.change(e)}>
+                        <Input type="select" name="race" value={this.state.race} onChange={e => this.change(e)}>
                             <option value="">---</option>
                             <option value="White">White</option>
                             <option value="Black">Black</option>
@@ -144,7 +145,7 @@ class NewProfileForm extends Component {
                             <option value="Pacific Islander">Pacific Islander</option>
                             <option value="Other">Other</option>
                         </Input>
-                        <Input type="select" name="gender" onChange={e => this.change(e)}>
+                        <Input type="select" name="gender" value={this.state.gender} onChange={e => this.change(e)}>
                             <option value="">---</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
@@ -183,9 +184,10 @@ class NewProfileForm extends Component {
                         onChange={e => this.change(e)} 
                         />
                         <br />
-                        <Input 
+                        <input 
                         type="file"
-                        onChange={this.fileChangedHandler} 
+                        ref={this.profilePictureUpload}
+                        onChange={this.fileChangedHandler}
                         />
                         <h3>Professional Information</h3>
                         <Input 
