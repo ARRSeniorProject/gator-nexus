@@ -1,6 +1,8 @@
 import React, { Component, useState } from 'react';
 import { Button, Form, FormGroup, Label, Input} from 'reactstrap';
+import ChipInput from 'material-ui-chip-input';
 import axios from 'axios';
+import _ from 'underscore';
 //import Card from '@material-ui/core/Card';
 //import CardActionArea from '@material-ui/core/CardActionArea';
 //import CardActions from '@material-ui/core/CardActions';
@@ -52,7 +54,7 @@ class NewProfileForm extends Component {
             major: this.state.major,
             gpa: parseFloat(this.state.gpa),
             interviewPreparationTime: parseInt(this.state.interviewPreparationTime),
-            skills: ['Python', 'Java', 'C++']
+            skills: this.state.skills
         }
         if(this.state.company != "") {
             newProfile.company = this.state.company;
@@ -89,7 +91,7 @@ class NewProfileForm extends Component {
                     else {
                         console.log('File Uploaded');
                         newProfile.profilePictureLink = res.data.location;
-                        //axios.post('/api/personas', newProfile).then(res => console.log(res.data));
+                        axios.post('/api/personas', newProfile).then(res => console.log(res.data));
                     }
                 }
             }).catch((error) => {
@@ -97,9 +99,9 @@ class NewProfileForm extends Component {
             });
         } 
         else {
-            console.log(newProfile);
-            //axios.post('/api/personas', newProfile).then(res => console.log(res.data));
+            axios.post('/api/personas', newProfile).then(res => console.log(res.data));
         }
+        console.log(newProfile);
         this.setState({
             gender: '',
             race: '',
@@ -119,13 +121,24 @@ class NewProfileForm extends Component {
             profilePictureLink: ''
         });
         this.profilePictureUpload.current.value = null;
-        console.log('cleared');
     };
 
     change = (event) => {
         this.setState({
             [event.target.name]: event.target.value
-        })
+        });
+    };
+
+    handleAddSkill = (skill) => {
+        this.setState({
+            skills: [...this.state.skills, skill]
+        });
+    };
+
+    handleDeleteSkill = (skill) => {
+        this.setState({
+            skills: _.without(this.state.skills, skill)
+        });
     };
 
     render() {
@@ -215,6 +228,12 @@ class NewProfileForm extends Component {
                         onChange={e => this.change(e)} 
                         />
                         <br />
+                        <ChipInput
+                        label="Skills"
+                        value={this.state.skills}
+                        onAdd={(skill) => this.handleAddSkill(skill)}
+                        onDelete={(skill, index) => this.handleDeleteSkill(skill, index)}
+                        />
                         <Input 
                         name="company"
                         placeholder='Company'
@@ -227,7 +246,6 @@ class NewProfileForm extends Component {
                         value={this.state.interviewPreparationTime}
                         onChange={e => this.change(e)} 
                         />
-                        <br />
                         <Button onClick={e => this.onSubmit(e)}>Submit</Button>
                     </FormGroup>
                 </Form>
