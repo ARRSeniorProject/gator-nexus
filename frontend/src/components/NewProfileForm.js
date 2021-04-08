@@ -1,16 +1,10 @@
-import React, { Component, useState } from 'react';
-import { Button, Form, FormGroup, Label, Input} from 'reactstrap';
+import React, { Component } from 'react';
 import ChipInput from 'material-ui-chip-input';
 import axios from 'axios';
 import _ from 'underscore';
-//import Card from '@material-ui/core/Card';
-//import CardActionArea from '@material-ui/core/CardActionArea';
-//import CardActions from '@material-ui/core/CardActions';
-//import CardContent from '@material-ui/core/CardContent';
-//import Typography from '@material-ui/core/Typography';
-//import Button from '@material-ui/core/Button';
-//import Grid from '@material-ui/core/Grid';
-//import { TextField } from '@material-ui/core';
+import { TextField, Select, MenuItem, InputLabel, FormControl, Button } from '@material-ui/core';
+import { PhotoCamera } from '@material-ui/icons';
+import { makeStyles } from '@material-ui/core/styles';
 
 class NewProfileForm extends Component {
     constructor(props) {
@@ -31,14 +25,21 @@ class NewProfileForm extends Component {
             interviewPreparationTime: '',
             skills: [],
             profilePictureImage: null,
-            profilePictureLink: ''
+            profilePictureLink: '',
+            profilePictureFileName: 'No File Chosen'
         }
         this.profilePictureUpload = React.createRef();
-    } 
+        this.classes = makeStyles((theme) => ({
+            button: {
+                margin: theme.spacing(1),
+            }
+        }));
+    }
 
     fileChangedHandler = (event) => {
         this.setState({
-            profilePictureImage: event.target.files[0]
+            profilePictureImage: event.target.files[0],
+            profilePictureFileName: event.target.value.split("\\").slice(-1)
         });
     };
 
@@ -118,7 +119,8 @@ class NewProfileForm extends Component {
             interviewPreparationTime: '',
             skills: [],
             profilePictureImage: null,
-            profilePictureLink: ''
+            profilePictureLink: '',
+            profilePictureFileName: 'No File Chosen'
         });
         this.profilePictureUpload.current.value = null;
     };
@@ -145,85 +147,113 @@ class NewProfileForm extends Component {
         return(
             <div className="form-wrapper">
                 <center><h1>Enter in your Information</h1></center>
-                <Form>
-                    <FormGroup>
+                <form>
+                    <FormControl>
                         <h3>Personal Information</h3>
-                        <Input type="select" name="race" value={this.state.race} onChange={e => this.change(e)}>
-                            <option value="">---</option>
-                            <option value="White">White</option>
-                            <option value="Black">Black</option>
-                            <option value="Hispanic or Latino">Hispanic or Latino</option>
-                            <option value="Native American">Native American</option>
-                            <option value="Asian">Asian</option>
-                            <option value="Pacific Islander">Pacific Islander</option>
-                            <option value="Other">Other</option>
-                        </Input>
-                        <Input type="select" name="gender" value={this.state.gender} onChange={e => this.change(e)}>
-                            <option value="">---</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                            <option value="Other">Other</option>
-                        </Input>
-                        <br />
-                        <Input 
+                        <FormControl>
+                            <InputLabel htmlFor="race-dropdown">Race</InputLabel>
+                            <Select name="race" variant="outlined" labelId="race-dropdown" value={this.state.race} onChange={e => this.change(e)}>
+                                <MenuItem value="">---</MenuItem>
+                                <MenuItem value="White">White</MenuItem>
+                                <MenuItem value="Black">Black</MenuItem>
+                                <MenuItem value="Hispanic or Latino">Hispanic or Latino</MenuItem>
+                                <MenuItem value="Native American">Native American</MenuItem>
+                                <MenuItem value="Asian">Asian</MenuItem>
+                                <MenuItem value="Pacific Islander">Pacific Islander</MenuItem>
+                                <MenuItem value="Other">Other</MenuItem>
+                            </Select>
+                        </FormControl>
+                        <FormControl>
+                            <InputLabel id="gender-dropdown">Gender</InputLabel>
+                            <Select name="gender" variant="outlined" labelId="gender-dropdown" value={this.state.gender} onChange={e => this.change(e)}>
+                                <MenuItem value="">---</MenuItem>
+                                <MenuItem value="Male">Male</MenuItem>
+                                <MenuItem value="Female">Female</MenuItem>
+                                <MenuItem value="Other">Other</MenuItem>
+                            </Select>
+                        </FormControl>
+                        <TextField 
                         name="age"
                         placeholder='Age'
+                        variant="outlined"
                         value={this.state.age}
                         onChange={e => this.change(e)} 
                         />
-                        <Input 
+                        <TextField
                         name="householdIncome"
                         placeholder='Household Income'
+                        variant="outlined"
                         value={this.state.householdIncome}
                         onChange={e => this.change(e)} 
                         />
-                        <Input 
+                        <TextField 
                         name="employmentStatus"
                         placeholder='Employment Status'
+                        variant="outlined"
                         value={this.state.employmentStatus}
                         onChange={e => this.change(e)} 
                         />
                         <br />
-                        <Input 
+                        <TextField
                         name="phoneNumber"
                         placeholder='Phone Number'
+                        variant="outlined"
                         value={this.state.phoneNumber}
                         onChange={e => this.change(e)} 
                         />
-                        <Input 
+                        <TextField
                         name="email"
                         placeholder='Email'
+                        variant="outlined"
                         value={this.state.email}
                         onChange={e => this.change(e)} 
                         />
                         <br />
                         <input 
+                        id="profile-picture-upload"
+                        style={{display: "none"}}
                         type="file"
                         ref={this.profilePictureUpload}
                         onChange={this.fileChangedHandler}
                         />
+                        <label htmlFor="profile-picture-upload">
+                            <Button 
+                            variant="contained"
+                            color="primary" 
+                            component="span" 
+                            className={this.classes.button}
+                            startIcon={<PhotoCamera />}
+                            >
+                                Upload Profile Picture
+                            </Button>
+                        </label>
+                        {this.state.profilePictureFileName}
                         <h3>Professional Information</h3>
-                        <Input 
+                        <TextField 
                         name="academicStanding"
                         placeholder='Academic Standing'
+                        variant="outlined"
                         value={this.state.academicStanding}
                         onChange={e => this.change(e)} 
                         />
-                        <Input 
+                        <TextField 
                         name="major"
                         placeholder='Major'
+                        variant="outlined"
                         value={this.state.major}
                         onChange={e => this.change(e)} 
                         />
-                        <Input 
+                        <TextField
                         name="minor"
                         placeholder='Minor'
+                        variant="outlined"
                         value={this.state.minor}
                         onChange={e => this.change(e)} 
                         />
-                        <Input 
+                        <TextField
                         name="gpa"
                         placeholder='GPA'
+                        variant="outlined"
                         value={this.state.gpa}
                         onChange={e => this.change(e)} 
                         />
@@ -234,21 +264,23 @@ class NewProfileForm extends Component {
                         onAdd={(skill) => this.handleAddSkill(skill)}
                         onDelete={(skill, index) => this.handleDeleteSkill(skill, index)}
                         />
-                        <Input 
+                        <TextField 
                         name="company"
                         placeholder='Company'
+                        variant="outlined"
                         value={this.state.company}
                         onChange={e => this.change(e)} 
                         />
-                        <Input 
+                        <TextField 
                         name="interviewPreparationTime"
                         placeholder='Interview Preparation Time'
+                        variant="outlined"
                         value={this.state.interviewPreparationTime}
                         onChange={e => this.change(e)} 
                         />
-                        <Button onClick={e => this.onSubmit(e)}>Submit</Button>
-                    </FormGroup>
-                </Form>
+                        <Button variant="contained" color="primary" onClick={e => this.onSubmit(e)}>Submit</Button>
+                    </FormControl>
+                </form>
             </div>
         );
     }
