@@ -1,4 +1,3 @@
-
 [![Build Status](https://travis-ci.com/ARRSeniorProject/gator-nexus.svg?branch=main)](https://travis-ci.com/ARRSeniorProject/gator-nexus)
 
 # GatorNexus
@@ -10,7 +9,6 @@ This is a MERN Stack web application that gathers and displays demographic data 
 1. Abinai Pasunuri
 2. Roberto Pantoja
 3. Ricardo Golac
-
 
 ## Code Sources
 
@@ -62,4 +60,4 @@ We used code from Reactstrap to help build the front end of our website.
 Add all database keys and tokens to a .env folder in the root folder.
 
 Current Variables:
-MONGO_URI 
+MONGO_URI, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_BUCKET
