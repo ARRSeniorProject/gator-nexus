@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import axios from 'axios';
 import { PieChart, Pie, Cell, Legend } from 'recharts';
 
-const COLORS = ['#0088FE', '#C4270C', '#FFBB28', '#FF8042', '#56D62B', '#d203fc', '#700785'];
+const COLORS = ['#0088FE', '#C4270C', '#FFBB28', '#FF8042', '#56D62B', '#d203fc', 'j'];
 
 class PieChartEthnicityGraph extends PureComponent {
   constructor(props) {
