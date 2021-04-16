@@ -5,6 +5,21 @@ import _ from 'underscore';
 import { TextField, Select, MenuItem, InputLabel, FormControl, Button } from '@material-ui/core';
 import { PhotoCamera } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+
+const theme = createMuiTheme({
+    palette: {
+        primary: {
+            main: '#33618A'
+        }
+    },
+    typography: {
+        fontFamily: [
+            'Montserrat'
+        ].join(','),
+    }
+});
 
 class NewProfileForm extends Component {
     constructor(props) {
@@ -145,143 +160,145 @@ class NewProfileForm extends Component {
 
     render() {
         return(
-            <div className="form-wrapper">
-                <center><h1>Enter in your Information</h1></center>
-                <form>
-                    <FormControl>
-                        <h3>Personal Information</h3>
+            <ThemeProvider theme={theme}>
+                <div className="form-wrapper">
+                    <center><h1>Enter in your Information</h1></center>
+                    <form>
                         <FormControl>
-                            <InputLabel htmlFor="race-dropdown">Race</InputLabel>
-                            <Select name="race" variant="outlined" labelId="race-dropdown" value={this.state.race} onChange={e => this.change(e)}>
-                                <MenuItem value="">---</MenuItem>
-                                <MenuItem value="White">White</MenuItem>
-                                <MenuItem value="Black">Black</MenuItem>
-                                <MenuItem value="Hispanic or Latino">Hispanic or Latino</MenuItem>
-                                <MenuItem value="Native American">Native American</MenuItem>
-                                <MenuItem value="Asian">Asian</MenuItem>
-                                <MenuItem value="Pacific Islander">Pacific Islander</MenuItem>
-                                <MenuItem value="Other">Other</MenuItem>
-                            </Select>
+                            <h3>Personal Information</h3>
+                            <FormControl>
+                                <InputLabel htmlFor="race-dropdown">Race</InputLabel>
+                                <Select name="race" variant="outlined" labelId="race-dropdown" value={this.state.race} onChange={e => this.change(e)}>
+                                    <MenuItem value="">---</MenuItem>
+                                    <MenuItem value="White">White</MenuItem>
+                                    <MenuItem value="Black">Black</MenuItem>
+                                    <MenuItem value="Hispanic or Latino">Hispanic or Latino</MenuItem>
+                                    <MenuItem value="Native American">Native American</MenuItem>
+                                    <MenuItem value="Asian">Asian</MenuItem>
+                                    <MenuItem value="Pacific Islander">Pacific Islander</MenuItem>
+                                    <MenuItem value="Other">Other</MenuItem>
+                                </Select>
+                            </FormControl>
+                            <FormControl>
+                                <InputLabel id="gender-dropdown">Gender</InputLabel>
+                                <Select name="gender" variant="outlined" labelId="gender-dropdown" value={this.state.gender} onChange={e => this.change(e)}>
+                                    <MenuItem value="">---</MenuItem>
+                                    <MenuItem value="Male">Male</MenuItem>
+                                    <MenuItem value="Female">Female</MenuItem>
+                                    <MenuItem value="Other">Other</MenuItem>
+                                </Select>
+                            </FormControl>
+                            <TextField 
+                            name="age"
+                            placeholder='Age'
+                            variant="outlined"
+                            value={this.state.age}
+                            onChange={e => this.change(e)} 
+                            />
+                            <TextField
+                            name="householdIncome"
+                            placeholder='Household Income'
+                            variant="outlined"
+                            value={this.state.householdIncome}
+                            onChange={e => this.change(e)} 
+                            />
+                            <TextField 
+                            name="employmentStatus"
+                            placeholder='Employment Status'
+                            variant="outlined"
+                            value={this.state.employmentStatus}
+                            onChange={e => this.change(e)} 
+                            />
+                            <br />
+                            <TextField
+                            name="phoneNumber"
+                            placeholder='Phone Number'
+                            variant="outlined"
+                            value={this.state.phoneNumber}
+                            onChange={e => this.change(e)} 
+                            />
+                            <TextField
+                            name="email"
+                            placeholder='Email'
+                            variant="outlined"
+                            value={this.state.email}
+                            onChange={e => this.change(e)} 
+                            />
+                            <br />
+                            <input 
+                            id="profile-picture-upload"
+                            style={{display: "none"}}
+                            type="file"
+                            ref={this.profilePictureUpload}
+                            onChange={this.fileChangedHandler}
+                            />
+                            <label htmlFor="profile-picture-upload">
+                                <Button 
+                                variant="contained"
+                                color="primary" 
+                                component="span" 
+                                className={this.classes.button}
+                                startIcon={<PhotoCamera />}
+                                >
+                                    Upload Profile Picture
+                                </Button>
+                            </label>
+                            {this.state.profilePictureFileName}
+                            <h3>Professional Information</h3>
+                            <TextField 
+                            name="academicStanding"
+                            placeholder='Academic Standing'
+                            variant="outlined"
+                            value={this.state.academicStanding}
+                            onChange={e => this.change(e)} 
+                            />
+                            <TextField 
+                            name="major"
+                            placeholder='Major'
+                            variant="outlined"
+                            value={this.state.major}
+                            onChange={e => this.change(e)} 
+                            />
+                            <TextField
+                            name="minor"
+                            placeholder='Minor'
+                            variant="outlined"
+                            value={this.state.minor}
+                            onChange={e => this.change(e)} 
+                            />
+                            <TextField
+                            name="gpa"
+                            placeholder='GPA'
+                            variant="outlined"
+                            value={this.state.gpa}
+                            onChange={e => this.change(e)} 
+                            />
+                            <br />
+                            <ChipInput
+                            label="Skills"
+                            value={this.state.skills}
+                            onAdd={(skill) => this.handleAddSkill(skill)}
+                            onDelete={(skill, index) => this.handleDeleteSkill(skill, index)}
+                            />
+                            <TextField 
+                            name="company"
+                            placeholder='Company'
+                            variant="outlined"
+                            value={this.state.company}
+                            onChange={e => this.change(e)} 
+                            />
+                            <TextField 
+                            name="interviewPreparationTime"
+                            placeholder='Interview Preparation Time'
+                            variant="outlined"
+                            value={this.state.interviewPreparationTime}
+                            onChange={e => this.change(e)} 
+                            />
+                            <Button variant="contained" color="primary" onClick={e => this.onSubmit(e)}>Submit</Button>
                         </FormControl>
-                        <FormControl>
-                            <InputLabel id="gender-dropdown">Gender</InputLabel>
-                            <Select name="gender" variant="outlined" labelId="gender-dropdown" value={this.state.gender} onChange={e => this.change(e)}>
-                                <MenuItem value="">---</MenuItem>
-                                <MenuItem value="Male">Male</MenuItem>
-                                <MenuItem value="Female">Female</MenuItem>
-                                <MenuItem value="Other">Other</MenuItem>
-                            </Select>
-                        </FormControl>
-                        <TextField 
-                        name="age"
-                        placeholder='Age'
-                        variant="outlined"
-                        value={this.state.age}
-                        onChange={e => this.change(e)} 
-                        />
-                        <TextField
-                        name="householdIncome"
-                        placeholder='Household Income'
-                        variant="outlined"
-                        value={this.state.householdIncome}
-                        onChange={e => this.change(e)} 
-                        />
-                        <TextField 
-                        name="employmentStatus"
-                        placeholder='Employment Status'
-                        variant="outlined"
-                        value={this.state.employmentStatus}
-                        onChange={e => this.change(e)} 
-                        />
-                        <br />
-                        <TextField
-                        name="phoneNumber"
-                        placeholder='Phone Number'
-                        variant="outlined"
-                        value={this.state.phoneNumber}
-                        onChange={e => this.change(e)} 
-                        />
-                        <TextField
-                        name="email"
-                        placeholder='Email'
-                        variant="outlined"
-                        value={this.state.email}
-                        onChange={e => this.change(e)} 
-                        />
-                        <br />
-                        <input 
-                        id="profile-picture-upload"
-                        style={{display: "none"}}
-                        type="file"
-                        ref={this.profilePictureUpload}
-                        onChange={this.fileChangedHandler}
-                        />
-                        <label htmlFor="profile-picture-upload">
-                            <Button 
-                            variant="contained"
-                            color="primary" 
-                            component="span" 
-                            className={this.classes.button}
-                            startIcon={<PhotoCamera />}
-                            >
-                                Upload Profile Picture
-                            </Button>
-                        </label>
-                        {this.state.profilePictureFileName}
-                        <h3>Professional Information</h3>
-                        <TextField 
-                        name="academicStanding"
-                        placeholder='Academic Standing'
-                        variant="outlined"
-                        value={this.state.academicStanding}
-                        onChange={e => this.change(e)} 
-                        />
-                        <TextField 
-                        name="major"
-                        placeholder='Major'
-                        variant="outlined"
-                        value={this.state.major}
-                        onChange={e => this.change(e)} 
-                        />
-                        <TextField
-                        name="minor"
-                        placeholder='Minor'
-                        variant="outlined"
-                        value={this.state.minor}
-                        onChange={e => this.change(e)} 
-                        />
-                        <TextField
-                        name="gpa"
-                        placeholder='GPA'
-                        variant="outlined"
-                        value={this.state.gpa}
-                        onChange={e => this.change(e)} 
-                        />
-                        <br />
-                        <ChipInput
-                        label="Skills"
-                        value={this.state.skills}
-                        onAdd={(skill) => this.handleAddSkill(skill)}
-                        onDelete={(skill, index) => this.handleDeleteSkill(skill, index)}
-                        />
-                        <TextField 
-                        name="company"
-                        placeholder='Company'
-                        variant="outlined"
-                        value={this.state.company}
-                        onChange={e => this.change(e)} 
-                        />
-                        <TextField 
-                        name="interviewPreparationTime"
-                        placeholder='Interview Preparation Time'
-                        variant="outlined"
-                        value={this.state.interviewPreparationTime}
-                        onChange={e => this.change(e)} 
-                        />
-                        <Button variant="contained" color="primary" onClick={e => this.onSubmit(e)}>Submit</Button>
-                    </FormControl>
-                </form>
-            </div>
+                    </form>
+                </div>
+            </ThemeProvider>
         );
     }
 }
