@@ -51,6 +51,7 @@ const PersonaSchema = new Schema({
     },
     householdIncome: {
         type: Number,
+        min: 0,
         required: [true, 'Household Income is required']
     },
     employmentStatus: {
