@@ -3,15 +3,14 @@ import ChipInput from 'material-ui-chip-input';
 import axios from 'axios';
 import _ from 'underscore';
 import '@gouch/to-title-case';
-import emailMask from 'text-mask-addons/dist/emailMask';
-import { TextField, Select, MenuItem, InputLabel, FormControl, Button, Grid, Container, Input } from '@material-ui/core';
-import PropTypes from 'prop-types';
-import MaskedInput from 'react-text-mask';
-import CurrencyTextField from '@unicef/material-ui-currency-textfield';
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
+import { TextField, Select, MenuItem, InputLabel, FormControl, Button, Grid, Container, FormHelperText, Input } from '@material-ui/core';
 import { PhotoCamera } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
+import CurrencyTextField from '@unicef/material-ui-currency-textfield';
 
 const theme = createMuiTheme({
     palette: {
@@ -26,63 +25,13 @@ const theme = createMuiTheme({
     }
 });
 
-const PhoneNumberMask = (props) => {
-    const {inputRef, ...other} = props;
-    return (
-        <MaskedInput
-        {...other}
-        ref = {(ref) => {
-            inputRef(ref ? ref.inputElement : null);
-        }}
-        mask={[/[1-9]/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
-        placeholderChar={'\u2000'}
-        />
-    );
-};
-
-PhoneNumberMask.propTypes = {
-    inputRef: PropTypes.func.isRequired,
-};
-
-const EmailMask = (props) => {
-    const {inputRef, ...other} = props;
-    return (
-        <MaskedInput
-        {...other}
-        ref = {(ref) => {
-            inputRef(ref ? ref.inputElement : null);
-        }}
-        mask={emailMask}
-        placeholderChar={'\u2000'}
-        />
-    );
-};
-
-EmailMask.propTypes = {
-    inputRef: PropTypes.func.isRequired,
-};
-
 class NewProfileForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            gender: '',
-            race: '',
-            age: '',
-            householdIncome: '',
-            employmentStatus: '',
-            company: '',
-            academicStanding: '',
-            major: '',
-            minor: '',
-            gpa: '',
-            interviewPreparationTime: '',
             skills: [],
             profilePictureImage: null,
-            profilePictureLink: '',
             profilePictureFileName: 'No File Chosen',
-            phoneNumber: '  -   -    ',
-            email: '@.',
             submitted: false
         }
         this.profilePictureUpload = React.createRef();
@@ -100,105 +49,13 @@ class NewProfileForm extends Component {
         });
     };
 
-    onSubmit = (event) => {
-        event.preventDefault();
-        var skills = [];
-        for(var i = 0; i < this.state.skills.length; i++) {
-            skills.push(this.state.skills[i].toLowerCase().toTitleCase());
-        }
-        var newProfile = {
-            gender: this.state.gender,
-            race: this.state.race,
-            age: parseInt(this.state.age),
-            householdIncome: parseInt(this.state.householdIncome),
-            employmentStatus: parseInt(this.state.employmentStatus),
-            academicStanding: parseInt(this.state.academicStanding),
-            major: this.state.major.toLowerCase().toTitleCase(),
-            gpa: parseFloat(this.state.gpa),
-            interviewPreparationTime: parseInt(this.state.interviewPreparationTime),
-            skills: skills
-        }
-        if(this.state.company != "") {
-            newProfile.company = this.state.company.toLowerCase().toTitleCase();
-        }
-        if(this.state.minor != "") {
-            newProfile.minor = this.state.minor.toLowerCase().toTitleCase();
-        }
-        if(this.state.phoneNumber != "  -   -    ") {
-            newProfile.phoneNumber = this.state.phoneNumber;
-        }
-        if(this.state.email != "@.") {
-            newProfile.email = this.state.email;
-        }
-        const data = new FormData();
-        if(this.state.profilePictureImage) {
-            data.append('profilePicture', this.state.profilePictureImage, this.state.profilePictureImage.name);
-            axios.post('/api/profile-picture/upload', data, {
-                headers: {
-                    'accept': 'application/json',
-                    'Accept-Language': 'en-US,en;q=0.8',
-                    'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
-                }
-            })
-            .then((res) => {
-                if(res.status === 200) {
-                    if(res.data.error) {
-                        if(res.data.error.code === 'LIMIT_FILE_SIZE') {
-                            console.log('Max size: 3MB');
-                        } 
-                        else {
-                            console.log(res.data.error);
-                        }
-                    } 
-                    else {
-                        console.log('File Uploaded');
-                        newProfile.profilePictureLink = res.data.location;
-                        axios.post('/api/personas', newProfile).then(res => console.log(res.data));
-                        this.setState({submitted: true})
-                    }
-                }
-            }).catch((error) => {
-                console.log(error);
-            });
-        } 
-        else {
-            axios.post('/api/personas', newProfile).then(res => console.log(res.data));
-            this.setState({submitted: true})
-        }
-        console.log(newProfile);
-        this.setState({
-            gender: '',
-            race: '',
-            age: '',
-            householdIncome: '',
-            employmentStatus: '',
-            email: '',
-            company: '',
-            academicStanding: '',
-            major: '',
-            minor: '',
-            gpa: '',
-            interviewPreparationTime: '',
-            skills: [],
-            profilePictureImage: null,
-            profilePictureLink: '',
-            profilePictureFileName: 'No File Chosen',
-            phoneNumber: '  -   -    ',
-            email: '@.'
-        });
-        this.profilePictureUpload.current.value = null;
-    };
-
-    change = (event) => {
-        this.setState({
-            [event.target.name]: event.target.value
-        });
-    };
-
     handleAddSkill = (skill) => {
-        this.setState({
-            skills: [...this.state.skills, skill]
-        });
+        let newSkill = skill.toLowerCase().toTitleCase()
+        if(!this.state.skills.includes(newSkill)) {
+            this.setState({
+                skills: [...this.state.skills, newSkill]
+            });
+        }
     };
 
     handleDeleteSkill = (skill) => {
@@ -212,226 +69,370 @@ class NewProfileForm extends Component {
             <ThemeProvider theme={theme}>
                 <div className="form-wrapper">
                     <Container>
-                    <h1 style={{textAlign: 'center'}}>Enter in your Information</h1>
-                    <br />
-                    <form>
-                        <Grid container spacing={3} justify="center">
-                            <FormControl>
-                                <h3 style={{textAlign: 'center'}}>Personal Information</h3>
-                                <Grid container item xs={12} spacing={3}>
-                                    <Grid item xs>
-                                        <FormControl>
-                                            <InputLabel htmlFor="race-dropdown">Race</InputLabel>
-                                            <Select name="race" variant="outlined" labelId="race-dropdown" value={this.state.race} onChange={e => this.change(e)}>
-                                                <MenuItem value="White">White</MenuItem>
-                                                <MenuItem value="Black">Black</MenuItem>
-                                                <MenuItem value="Hispanic or Latino">Hispanic or Latino</MenuItem>
-                                                <MenuItem value="Native American">Native American</MenuItem>
-                                                <MenuItem value="Asian">Asian</MenuItem>
-                                                <MenuItem value="Pacific Islander">Pacific Islander</MenuItem>
-                                                <MenuItem value="Other">Other</MenuItem>
-                                            </Select>
-                                        </FormControl>
-                                    </Grid>
-                                    <Grid item xs>
-                                        <FormControl>
-                                            <InputLabel id="gender-dropdown">Gender</InputLabel>
-                                            <Select name="gender" variant="outlined" labelId="gender-dropdown" value={this.state.gender} onChange={e => this.change(e)}>
-                                                <MenuItem value="Male">Male</MenuItem>
-                                                <MenuItem value="Female">Female</MenuItem>
-                                                <MenuItem value="Other">Other</MenuItem>
-                                            </Select>
-                                        </FormControl>
-                                    </Grid>
-                                    <Grid item xs>
-                                        <TextField 
-                                        name="age"
-                                        label='Age'
-                                        type='number'
-                                        InputProps={{ inputProps: {min: 18} }}
-                                        variant="outlined"
-                                        value={this.state.age}
-                                        onChange={e => this.change(e)}
-                                        style={{width: '100%'}}
-                                        />
-                                    </Grid>
-                                </Grid>
-                                <br />
-                                <Grid container spacing={3}>
-                                    <Grid item xs={6}>
-                                        <CurrencyTextField
-                                        name="householdIncome"
-                                        label='Household Income'
-                                        helperText='Input Combined Family Income'
-                                        variant="outlined"
-                                        currencySymbol="$"
-                                        minimumValue="0"
-                                        outputFormat="number"
-                                        onChange={e => this.change(e)}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        <TextField 
-                                        name="employmentStatus"
-                                        label='Employment Status'
-                                        type='number'
-                                        InputProps={{ inputProps: {min: 0} }}
-                                        helperText='Input as Hours per Week'
-                                        variant="outlined"
-                                        value={this.state.employmentStatus}
-                                        onChange={e => this.change(e)} 
-                                        />
-                                    </Grid>
-                                </Grid>
-                                <br />
-                                <Grid container spacing={3}>
-                                    <Grid item xs={6}>
-                                        <TextField
-                                        name="phoneNumber"
-                                        label='Phone Number'
-                                        variant="outlined"
-                                        InputProps={{
-                                            inputComponent: PhoneNumberMask,
-                                            value: this.state.phoneNumber,
-                                            onChange: this.change
-                                        }}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        <TextField
-                                        name="email"
-                                        label='Email'
-                                        variant="outlined"
-                                        InputProps={{
-                                            inputComponent: EmailMask,
-                                            value: this.state.email,
-                                            onChange: this.change
-                                        }}
-                                        />
-                                    </Grid>
-                                </Grid>
-                                <br />
-                                <Grid container spacing={3}>
-                                    <Grid item xs={7}>
-                                        <input 
-                                        id="profile-picture-upload"
-                                        style={{display: "none"}}
-                                        type="file"
-                                        ref={this.profilePictureUpload}
-                                        onChange={this.fileChangedHandler}
-                                        />
-                                        <label htmlFor="profile-picture-upload">
-                                            <Button 
-                                            variant="contained"
-                                            color="primary" 
-                                            component="span" 
-                                            className={this.classes.button}
-                                            startIcon={<PhotoCamera />}
-                                            >
-                                            Upload Profile Picture
-                                            </Button>
-                                        </label>
-                                    </Grid>
-                                    <Grid item xs={5}>
-                                        {this.state.profilePictureFileName}
-                                    </Grid>
-                                </Grid>
-                                <br />
-                                <h3 style={{textAlign: 'center'}}>Professional Information</h3>
-                                <Grid container spacing={3}>
-                                    <Grid item xs={6}>
-                                        <TextField 
-                                        name="academicStanding"
-                                        label='Academic Standing'
-                                        type='number'
-                                        InputProps={{ inputProps: {min: 1} }}
-                                        helperText='Numeric Year in College'
-                                        variant="outlined"
-                                        value={this.state.academicStanding}
-                                        onChange={e => this.change(e)} 
-                                        />
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        <TextField
-                                        name="gpa"
-                                        label='GPA'
-                                        type='number'
-                                        InputProps={{ inputProps: {min: 0, max: 4.0, step: 0.1} }}
-                                        helperText='4.0 Scale'
-                                        variant="outlined"
-                                        value={this.state.gpa}
-                                        onChange={e => this.change(e)} 
-                                        />
-                                    </Grid>
-                                </Grid>
-                                <br />
-                                <Grid container spacing={3}>
-                                    <Grid item xs={6}>
-                                        <TextField 
-                                        name="major"
-                                        label='Major'
-                                        variant="outlined"
-                                        value={this.state.major}
-                                        onChange={e => this.change(e)} 
-                                        />
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        <TextField
-                                        name="minor"
-                                        label='Minor'
-                                        variant="outlined"
-                                        value={this.state.minor}
-                                        onChange={e => this.change(e)} 
-                                        />
-                                    </Grid>
-                                </Grid>
-                                <br />
-                                <ChipInput
-                                color="primary"
-                                label="Skills"
-                                value={this.state.skills}
-                                onAdd={(skill) => this.handleAddSkill(skill)}
-                                onDelete={(skill, index) => this.handleDeleteSkill(skill, index)}
-                                fullWidth="true"
-                                variant="outlined"
-                                />
-                                <br />
-                                <Grid container spacing={3}>
-                                    <Grid item xs={6}>
-                                        <TextField 
-                                        name="company"
-                                        variant="outlined"
-                                        value={this.state.company}
-                                        onChange={e => this.change(e)}
-                                        label="Internship Company"
-                                        />
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        <TextField 
-                                        name="interviewPreparationTime"
-                                        label='Interview Prep Time'
-                                        type='number'
-                                        InputProps={{ inputProps: {min: 0} }}
-                                        helperText='Approximate Total in Hours'
-                                        variant="outlined"
-                                        value={this.state.interviewPreparationTime}
-                                        onChange={e => this.change(e)}
-                                        width="100%"
-                                        />
-                                    </Grid>
-                                </Grid>
-                                <br />
-                                <Button variant="contained" color="primary" onClick={e => this.onSubmit(e)}>Submit</Button>
-                            </FormControl>
-                        </Grid>
-                        <br />
-                        {this.state.submitted ? <h4>Successfully Submitted! Thank you for Registering!</h4> : null}
-                    </form>
+                        <Formik
+                        initialValues={{
+                            gender: '',
+                            race: '',
+                            age: '',
+                            householdIncome: '',
+                            employmentStatus: '',
+                            company: '',
+                            academicStanding: '',
+                            major: '',
+                            minor: '',
+                            gpa: '',
+                            interviewPreparationTime: '',
+                            phoneNumber: '',
+                            email: ''
+                        }}
+                        onSubmit={(values, {setSubmitting, resetForm}) => {
+                            setSubmitting(true);
+                            //event.preventDefault();
+                            var newProfile = {
+                                gender: values.gender,
+                                race: values.race,
+                                age: parseInt(values.age),
+                                householdIncome: parseFloat(values.householdIncome.replace(/,/g, '')),
+                                employmentStatus: parseInt(values.employmentStatus),
+                                academicStanding: parseInt(values.academicStanding),
+                                major: values.major.toLowerCase().toTitleCase(),
+                                gpa: parseFloat(values.gpa),
+                                interviewPreparationTime: parseInt(values.interviewPreparationTime),
+                                skills: this.state.skills
+                            }
+                            if(values.company != "") {
+                                newProfile.company = values.company.toLowerCase().toTitleCase();
+                            }
+                            if(values.minor != "") {
+                                newProfile.minor = values.minor.toLowerCase().toTitleCase();
+                            }
+                            if(values.phoneNumber != "") {
+                                newProfile.phoneNumber = values.phoneNumber;
+                            }
+                            if(values.email != "") {
+                                newProfile.email = values.email;
+                            }
+                            const data = new FormData();
+                            if(this.state.profilePictureImage) {
+                                data.append('profilePicture', this.state.profilePictureImage, this.state.profilePictureImage.name);
+                                axios.post('/api/profile-picture/upload', data, {
+                                    headers: {
+                                        'accept': 'application/json',
+                                        'Accept-Language': 'en-US,en;q=0.8',
+                                        'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
+                                    }
+                                })
+                                .then((res) => {
+                                    if(res.status === 200) {
+                                        if(res.data.error) {
+                                            if(res.data.error.code === 'LIMIT_FILE_SIZE') {
+                                                console.log('Max size: 3MB');
+                                            } 
+                                            else {
+                                                console.log(res.data.error);
+                                            }
+                                        } 
+                                        else {
+                                            newProfile.profilePictureLink = res.data.location;
+                                            axios.post('/api/personas', newProfile).then(res => console.log(res.data));
+                                            this.setState({submitted: true})
+                                        }
+                                    }
+                                }).catch((error) => {
+                                    console.log(error);
+                                });
+                            } 
+                            else {
+                                axios.post('/api/personas', newProfile).then(res => console.log(res.data));
+                                this.setState({submitted: true})
+                            }
+                            this.setState({
+                                skills: [],
+                                profilePictureImage: null,
+                                profilePictureFileName: 'No File Chosen'
+                            });
+                            resetForm();
+                            this.profilePictureUpload.current.value = null;
+                        }}
+                        validationSchema={Yup.object().shape({
+                            race: Yup.string().required('Race is Required'),
+                            gender: Yup.string().required('Gender is Required'),
+                            age: Yup.number().required('Age is Required'),
+                            householdIncome: Yup.string().required('Household Income is Required'),
+                            employmentStatus: Yup.number().required('Employment Status is Required'),
+                            phoneNumber: Yup.string().matches(/[1-9]\d{2}-\d{3}-\d{4}/, 'Phone Number is not valid'),
+                            email: Yup.string().matches(/^([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}|N\/A)$/, 'Email is not valid'),
+                            academicStanding: Yup.number().required('Academic Standing is Required'),
+                            gpa: Yup.number().required('GPA is Required'),
+                            major: Yup.string().required('Major is Required'),
+                            interviewPreparationTime: Yup.number().required('Interview Prep Time is Required')
+                        })}
+                        >
+                            {(props) => {
+                                const {
+                                    values,
+                                    touched,
+                                    errors,
+                                    dirty,
+                                    isSubmitting,
+                                    handleChange,
+                                    handleBlur,
+                                    handleSubmit,
+                                    handleReset,
+                                } = props;
+                                return(
+                                    <form onSubmit={handleSubmit}>
+                                        <Grid container spacing={10} justify="center">
+                                            <FormControl>
+                                                <Grid container spacing={10}>
+                                                    <Grid item xs={6}>
+                                                        <h4 style={{textAlign: 'center'}}>Personal Info</h4>
+                                                        <Grid item>
+                                                            <FormControl fullWidth  error={errors.race && touched.race}>
+                                                                <InputLabel htmlFor="race-dropdown">Race</InputLabel>
+                                                                <Select
+                                                                name="race" 
+                                                                variant="outlined"
+                                                                labelId="race-dropdown"
+                                                                value={values.race}
+                                                                onChange={handleChange}
+                                                                >
+                                                                    <MenuItem value="White">White</MenuItem>
+                                                                    <MenuItem value="Black">Black</MenuItem>
+                                                                    <MenuItem value="Hispanic or Latino">Hispanic or Latino</MenuItem>
+                                                                    <MenuItem value="Native American">Native American</MenuItem>
+                                                                    <MenuItem value="Asian">Asian</MenuItem>
+                                                                    <MenuItem value="Pacific Islander">Pacific Islander</MenuItem>
+                                                                    <MenuItem value="Other">Other</MenuItem>
+                                                                </Select>
+                                                                <FormHelperText>{(errors.race && touched.race) && errors.race}</FormHelperText>
+                                                            </FormControl>
+                                                        </Grid>
+                                                        <br />
+                                                        <Grid item>
+                                                            <FormControl fullWidth error={errors.gender && touched.gender}>
+                                                                <InputLabel id="gender-dropdown">Gender</InputLabel>
+                                                                <Select
+                                                                fullWidth
+                                                                name="gender" 
+                                                                variant="outlined" 
+                                                                labelId="gender-dropdown" 
+                                                                value={values.gender} 
+                                                                onChange={handleChange}
+                                                                >
+                                                                    <MenuItem value="Male">Male</MenuItem>
+                                                                    <MenuItem value="Female">Female</MenuItem>
+                                                                    <MenuItem value="Other">Other</MenuItem>
+                                                                </Select>
+                                                                <FormHelperText>{(errors.gender && touched.gender) && errors.gender}</FormHelperText>
+                                                            </FormControl>
+                                                        </Grid>
+                                                        <br />
+                                                        <Grid item>
+                                                            <TextField 
+                                                            fullWidth
+                                                            error={errors.age && touched.age}
+                                                            name="age"
+                                                            label='Age'
+                                                            type='number'
+                                                            InputProps={{ inputProps: {min: 18} }}
+                                                            helperText={((errors.age && touched.age) && errors.age)}
+                                                            variant="outlined"
+                                                            value={values.age}
+                                                            onChange={handleChange} 
+                                                            />
+                                                        </Grid>
+                                                        <br />
+                                                        <Grid item>
+                                                            <CurrencyTextField
+                                                            fullWidth
+                                                            error={errors.householdIncome && touched.householdIncome}
+                                                            name="householdIncome"
+                                                            label='Household Income'
+                                                            helperText={((errors.householdIncome && touched.householdIncome) && errors.householdIncome) || 'Input Combined Family Income'}
+                                                            variant="outlined"
+                                                            currencySymbol="$"
+                                                            minimumValue="0"
+                                                            outputFormat="string"
+                                                            value={values.householdIncome}
+                                                            onChange={handleChange}
+                                                            />
+                                                        </Grid>
+                                                        <br />
+                                                        <Grid item>
+                                                            <TextField 
+                                                            fullWidth
+                                                            error={errors.employmentStatus && touched.employmentStatus}
+                                                            name="employmentStatus"
+                                                            label='Employment Status'
+                                                            type='number'
+                                                            InputProps={{ inputProps: {min: 0} }}
+                                                            helperText={((errors.employmentStatus && touched.employmentStatus) && errors.employmentStatus) || 'Input as Hours per Week'}
+                                                            variant="outlined"
+                                                            value={values.employmentStatus}
+                                                            onChange={handleChange} 
+                                                            />
+                                                        </Grid>
+                                                        <br />
+                                                        <Grid item>
+                                                            <TextField
+                                                            fullWidth
+                                                            error={errors.phoneNumber && touched.phoneNumber}
+                                                            name="phoneNumber"
+                                                            label='Phone Number'
+                                                            variant="outlined"
+                                                            helperText={((errors.phoneNumber && touched.phoneNumber) && errors.phoneNumber)}
+                                                            value={values.phoneNumber}
+                                                            onChange={handleChange}
+                                                            />
+                                                        </Grid>
+                                                        <br />
+                                                        <Grid item>
+                                                            <TextField
+                                                            fullWidth
+                                                            error={errors.email && touched.email}
+                                                            name="email"
+                                                            label='Email'
+                                                            variant="outlined"
+                                                            helperText={((errors.email && touched.email) && errors.email)}
+                                                            value={values.email}
+                                                            onChange={handleChange}
+                                                            />
+                                                        </Grid>
+                                                        <br />
+                                                        <Grid item>
+                                                            <input 
+                                                            id="profile-picture-upload"
+                                                            style={{display: "none"}}
+                                                            type="file"
+                                                            ref={this.profilePictureUpload}
+                                                            onChange={this.fileChangedHandler}
+                                                            />
+                                                            <label htmlFor="profile-picture-upload">
+                                                                <Button
+                                                                variant="contained"
+                                                                color="primary" 
+                                                                component="span" 
+                                                                className={this.classes.button}
+                                                                startIcon={<PhotoCamera />}
+                                                                >
+                                                                Upload Profile Photo
+                                                                </Button>
+                                                            </label>
+                                                            <br />
+                                                            <h6>{this.state.profilePictureFileName}</h6>
+                                                        </Grid>
+                                                    </Grid>
+                                                    <Grid item xs={6}>
+                                                        <h4 style={{textAlign: 'center'}}>Professional Info</h4>
+                                                        <Grid item>
+                                                            <TextField 
+                                                            fullWidth
+                                                            error={errors.academicStanding && touched.academicStanding}
+                                                            name="academicStanding"
+                                                            label='Academic Standing'
+                                                            type='number'
+                                                            InputProps={{ inputProps: {min: 1} }}
+                                                            helperText={((errors.academicStanding && touched.academicStanding) && errors.academicStanding) || 'Numeric Year in College'}
+                                                            variant="outlined"
+                                                            value={values.academicStanding}
+                                                            onChange={handleChange} 
+                                                            />
+                                                        </Grid>
+                                                        <br />
+                                                        <Grid item>
+                                                            <TextField
+                                                            fullWidth
+                                                            error={errors.gpa && touched.gpa}
+                                                            name="gpa"
+                                                            label='GPA'
+                                                            type='number'
+                                                            InputProps={{ inputProps: {min: 0, max: 4.0, step: 0.1} }}
+                                                            helperText={((errors.gpa && touched.gpa) && errors.gpa) || '4.0 Scale'}
+                                                            variant="outlined"
+                                                            value={values.gpa}
+                                                            onChange={handleChange} 
+                                                            />
+                                                        </Grid>
+                                                        <br />
+                                                        <Grid item>
+                                                            <TextField 
+                                                            fullWidth
+                                                            error={errors.major && touched.major}
+                                                            name="major"
+                                                            label='Major'
+                                                            helperText={((errors.major && touched.major) && errors.major) || 'No acronym input, such as CS or CpE'}
+                                                            variant="outlined"
+                                                            value={values.major}
+                                                            onChange={handleChange} 
+                                                            />
+                                                        </Grid>
+                                                        <br />
+                                                        <Grid item>
+                                                            <TextField
+                                                            fullWidth
+                                                            name="minor"
+                                                            label='Minor'
+                                                            helperText='No acronym input, such as CS or CpE'
+                                                            variant="outlined"
+                                                            value={values.minor}
+                                                            onChange={handleChange} 
+                                                            />
+                                                        </Grid>
+                                                        <br />
+                                                        <Grid item>
+                                                            <ChipInput
+                                                            fullWidth
+                                                            color="primary"
+                                                            label="Skills"
+                                                            value={this.state.skills}
+                                                            onAdd={(skill) => this.handleAddSkill(skill)}
+                                                            onDelete={(skill, index) => this.handleDeleteSkill(skill, index)}
+                                                            variant="outlined"
+                                                            />
+                                                        </Grid>
+                                                        <br />
+                                                        <Grid item>
+                                                            <TextField 
+                                                            fullWidth
+                                                            name="company"
+                                                            variant="outlined"
+                                                            helperText='No acronym input'
+                                                            value={values.company}
+                                                            onChange={handleChange}
+                                                            label="Internship Company"
+                                                            />
+                                                        </Grid>
+                                                        <br />
+                                                        <Grid item>
+                                                            <TextField
+                                                            fullWidth
+                                                            error={errors.interviewPreparationTime && touched.interviewPreparationTime} 
+                                                            name="interviewPreparationTime"
+                                                            label='Interview Prep Time'
+                                                            helperText={((errors.interviewPreparationTime && touched.interviewPreparationTime) && errors.interviewPreparationTime) || 'Approximate Total in Hours'}
+                                                            type='number'
+                                                            InputProps={{ inputProps: {min: 0} }}
+                                                            variant="outlined"
+                                                            value={values.interviewPreparationTime}
+                                                            onChange={handleChange}
+                                                            />
+                                                        </Grid>
+                                                        <br />
+                                                    </Grid>
+                                                </Grid>
+                                                <Button type="submit" variant="contained" color="primary">Submit</Button>
+                                                {this.state.submitted ? <h4>Successfully Submitted! Thank you for Registering!</h4> : null}
+                                            </FormControl>
+                                        </Grid>
+                                    </form>
+                                )
+                            }}
+                        </Formik>
                     </Container>
                 </div>
             </ThemeProvider>
         );
     }
 }
-
 export default NewProfileForm;
