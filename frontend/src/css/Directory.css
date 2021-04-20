@@ -1,0 +1,135 @@
+.card {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-right: 20px;
+    padding-left: 20px;
+    height: 150px;
+    width: 150px;
+    text-align: center;
+    margin: 5px;
+    display: inline-block;
+    font-size: small;
+    background-color: #f3d7bc70;
+    color: #4A8FE099;
+    transition: 0.3s;
+    margin: 20px;
+}
+
+/* .btn-primary {
+    font-size: small;
+    background-color: #4A8FE099;
+    text-align: center;
+    border-color: #4A8FE099;
+} */
+
+.btn{
+    text-align: center;
+    display: box;
+    font-size: small;
+    color: #4A8FE099;
+    transition: 0.3s;
+    height: 30%;
+    width: 85%;
+}
+
+.btn:hover{
+    border-style: outset;
+    border-color: #FFFFFF;
+    color: #4A8FE099;
+    box-shadow: 1px 2px 1px #4A8FE070;
+    transition: 0.3s;
+}
+
+.card:hover {
+    box-shadow: 1px 3px 1px #4A8FE070;
+    transform: scale(1.025);
+    transition-duration: 0.3s;
+}
+
+.filter-bar {
+    height: 50px;
+    color: #ffffff;
+    background-color: #ABCDEB;
+}
+
+.Col {
+    text-align: center;
+    align-items: center;
+    display: flex;
+    padding: 20px;
+}
+
+select {
+    border:0px;
+    outline:0px;
+ }
+
+.dropdown {
+    margin: 10px;
+    border-radius: 4px;
+    border-style: solid;
+    transition: 0.3s;
+    background-color: #ABCDEB;
+    color: #FFFFFF;
+    animation:fadeIn;
+    border-color: #ABCDEB;
+}
+
+.dropdown::-webkit-scrollbar {
+    width: 10px;
+    background: #ABCDEB;
+}
+
+.dropdown::-webkit-scrollbar-thumb {
+    background: #FFFFFF;
+    border-radius: 3px;
+    border-style: none;
+}
+
+.dropdown:hover {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    transition: 0.6s;
+}
+
+.clear-button {
+    border-style: none;
+    border-radius: 5px;
+    width: 60%;
+    height: 25px;
+    color: #FFFFFF;
+    background-color: #ABCDEB;
+}
+
+.clear-button:hover{
+    box-shadow: 1px 3px 1px #4A8FE070;
+    transform: scale(1.025);
+    border-style: outset;
+    border-color: #FFFFFF;
+    transition-duration: 0.3s;
+}
+
+.Row {
+    display: flex;
+    padding: 20px;
+}
+
+.Container {
+    text-align: center;
+    font-size: smaller;
+}
+
+.home {
+    display: list-item;
+    list-style: none;
+    align-items: center;
+    transition: 1s;
+}
+
+#search {
+    align-items: center;
+    text-align: center;
+    display: flex;
+    font-size: medium;
+    color: #7B7474;
+}
