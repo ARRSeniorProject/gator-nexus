@@ -22,7 +22,7 @@ export const SideBarData = [
   },
   {
     title: "New Profile",
-    path: "/newprofile",
+    path: "/api/newprofile",
     icon: <MdIcons.MdAccountBox />,
     cName: 'nav-text'
   }

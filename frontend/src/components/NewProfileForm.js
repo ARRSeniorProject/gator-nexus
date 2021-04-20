@@ -89,7 +89,7 @@ class NewProfileForm extends Component {
                             setSubmitting(true);
                             var newProfile = {
                                 gender: values.gender,
-                                ethnicity: values.ethnicity,
+                                race: values.ethnicity,
                                 age: parseInt(values.age),
                                 householdIncome: parseFloat(values.householdIncome.replace(/,/g, '')),
                                 employmentStatus: parseInt(values.employmentStatus),
@@ -133,7 +133,7 @@ class NewProfileForm extends Component {
                                         } 
                                         else {
                                             newProfile.profilePictureLink = res.data.location;
-                                            axios.post('/api/personas', newProfile).then(res => console.log(res));
+                                            axios.post('/api/personas', newProfile).then(res => res);
                                             this.setState({submitted: true})
                                         }
                                     }
@@ -143,7 +143,7 @@ class NewProfileForm extends Component {
                             } 
                             else {
                                 console.log(newProfile);
-                                axios.post('/api/personas', newProfile).then(res => console.log(res));
+                                axios.post('/api/personas', newProfile).then(res => res);
                                 this.setState({submitted: true})
                             }
                             this.setState({
