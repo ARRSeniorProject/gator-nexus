@@ -11,6 +11,7 @@ import Home from './pages/Home';
 import Directory from './pages/Directory';
 import Analysis from './pages/Analysis';
 import NewProfile from './pages/NewProfile';
+import StudentProfile from './pages/StudentProfile';
 
 class App extends Component {
 
@@ -49,6 +50,7 @@ class App extends Component {
             <Route path="/api/directory" exact component={() => <Directory handlechange={this.handlechange} state={this.state}/>}/>
             <Route path="/api/analysis" exact component={Analysis} />
             <Route path="/api/newprofile" exact component={NewProfile} />
+            <Route path="/api/studentprofile" exact component={StudentProfile} />
           </Switch>
         </Router>
       </div>

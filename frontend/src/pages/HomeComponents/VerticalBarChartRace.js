@@ -80,7 +80,7 @@ class VerticalBarChartRace extends PureComponent {
         <BarChart
           layout="vertical"
           width={400}
-          height={200}
+          height={100}
           data={this.state.realData}
           margin={{
             top: 5,
