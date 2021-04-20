@@ -31,12 +31,14 @@ router.get('/', (req, res) => {
                 'Other' : 0
             };
             let majors = {};
+            let minors = {};
             let skills = {};
             let total_skills = personas.map(a => a.skills).flat();
             for(var i = 0; i < personas.length; i++) {
                 genderCount[personas[i].gender] = genderCount[personas[i].gender] ? genderCount[personas[i].gender] + 1 : 1;
                 raceCount[personas[i].race] = raceCount[personas[i].race] ? raceCount[personas[i].race] + 1 : 1;
                 majors[personas[i].major] = majors[personas[i].major] ? majors[personas[i].major] + 1 : 1;
+                minors[personas[i].minor] = minors[personas[i].minor] ? minors[personas[i].minor] + 1 : 1;
             }
             for(var i = 0; i < total_skills.length; i++)
                 skills[total_skills[i]] = skills[total_skills[i]] ? skills[total_skills[i]] + 1 : 1;
@@ -53,6 +55,7 @@ router.get('/', (req, res) => {
             aggregatePersona['interviewPreparationTime'] = averageInterviewPreparationTime;
             aggregatePersona['academicStanding'] = averageAcademicStanding;
             aggregatePersona['majors'] = majors;
+            aggregatePersona['minors'] = minors;
             aggregatePersona['races'] = raceCount;
             aggregatePersona['gender'] = genderCount;
             aggregatePersona['skills'] = skills;

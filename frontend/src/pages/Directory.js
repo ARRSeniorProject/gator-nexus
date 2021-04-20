@@ -1,11 +1,9 @@
 import axios from 'axios';
 import * as MdIcons from "react-icons/md";
 import React, { Component } from 'react';
-import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css'
-// import {Container, Row, Col} from 'reactstrap';
-import { withRouter } from "react-router";
 import '../css/Directory.css';
+import { Redirect, Link } from "react-router-dom";
 import {
   Collapse,
   Navbar,
@@ -18,9 +16,16 @@ import {
   Row,
   Col
 } from 'reactstrap';
-import { MdImportContacts } from 'react-icons/md';
 
 class Card extends React.Component {
+
+  constructor() {
+    super();
+
+    this.state = {
+      visible: true
+    }
+  }
   
   renderSwitch(param){
     if(param < 1)
@@ -41,13 +46,20 @@ class Card extends React.Component {
   }
 
   render() {
+
       return (
-        <div className='card' style={{display: 'inline-block'}}> 
-          { this.props.value.company }
-          <hr style={{color: "#4A8FE099"}}></hr>
-          {this.renderSwitch(this.props.value.academicStanding)}
-          <br></br>
-          {this.props.value.gpa}
+        <div id='card'>
+          <div id={'card'} className='card' style={{display: 'inline-block'}}> 
+            { this.props.value.company }
+            <hr style={{color: "#4A8FE099"}}></hr>
+            {this.renderSwitch(this.props.value.academicStanding)}
+            <br></br>
+            {this.props.value.gpa}
+            <br></br>
+            <Link to={{pathname: "/api/studentprofile", state:{ student: this.props.value }}} className="btn">More Info</Link>
+          </div>
+          <div id='big-card' style={{display: this.state.visible ? "none" : "block"}}>
+          </div>
         </div>
       );
   }
@@ -68,6 +80,10 @@ class Directory extends Component{
       selectedEthnicity: 0,
       selectedGPA: 0
     }
+  }
+
+  handleCardClick = () => {
+    console.log('clicked');
   }
 
   filter(e){
@@ -113,7 +129,7 @@ class Directory extends Component{
     if(this.state.selectedGPA == 0)
     {
       this.state.size++;
-      return <Card className='card' value = {e} />
+      return <div onclick={this.handleCardClick}><Card className='card' value = {e} onclick={this.handleCardClick}/></div>
     }
     else{
       switch(this.state.selectedGPA){
@@ -121,56 +137,56 @@ class Directory extends Component{
           if(e.gpa < 0.5)
           {
             this.state.size++;
-            return <Card className='card' value = {e} />
+            return <Card className='card' value = {e} onclick={this.handleCardClick}/>
           }
           break;
         case "2":
           if(e.gpa >= 0.5 && e.gpa < 1)
           {
             this.state.size++;
-            return <Card className='card' value = {e} />
+            return <Card className='card' value = {e} onclick={this.handleCardClick}/>
           }
           break;
         case "3":
           if(e.gpa >= 1 && e.gpa < 1.5)
           {
             this.state.size++;
-            return <Card className='card' value = {e} />
+            return <Card className='card' value = {e} onclick={this.handleCardClick}/>
           }
           break;
         case "4":
           if(e.gpa >= 1.5 && e.gpa < 2)
           {
             this.state.size++;
-            return <Card className='card' value = {e} />
+            return <Card className='card' value = {e} onclick={this.handleCardClick}/>
           }
           break;
         case "5":
           if(e.gpa >= 2 && e.gpa < 2.5)
           {
             this.state.size++;
-            return <Card className='card' value = {e} />
+            return <Card className='card' value = {e} onclick={this.handleCardClick}/>
           }
           break;
         case "6":
           if(e.gpa >= 2.5 && e.gpa < 3)
           {
             this.state.size++;
-            return <Card className='card' value = {e} />
+            return <Card className='card' value = {e} onclick={this.handleCardClick}/>
           }
           break;
         case "7":
           if(e.gpa >= 3 && e.gpa < 3.5)
           {
             this.state.size++;
-            return <Card className='card' value = {e} />
+            return <Card className='card' value = {e} onclick={this.handleCardClick}/>
           }
           break;
         case "8":
           if(e.gpa >= 3.5 && e.gpa <= 4.00)
           { 
             this.state.size++
-            return <Card className='card' value = {e} />
+            return <Card className='card' value = {e} onclick={this.handleCardClick}/>
           }
           break;
         default:
@@ -263,29 +279,32 @@ class Directory extends Component{
   return (
       <div className='home'>
         <Navbar className="filter-bar">
-          <Container>
+        <Container className='Container'>
+
+            <Col>
             <MdIcons.MdFilterList />
-
-            <div>
-
-              Year:<select id = "yearDropdown" onChange={this.handleYearChange}>
-                  <option value="0">All</option>
+            </Col>
+<Col>
+              {/*Year:*/}<select className='dropdown' id = "yearDropdown" onChange={this.handleYearChange}>
+                  <option value="0">Year</option>
                   <option value="1">Freshman</option>
                   <option value="2">Sophomore</option>
                   <option value="3">Junior</option>
                   <option value="4">Senior</option>
                   <option value="5">Super Senior</option>
               </select>
-
-              Company:<select id = "companyDropdown" onChange={this.handleCompanyChange}>
-                  <option value="0">All</option>
+              </Col>
+<Col>
+              {/*Company:*/}<select className='dropdown' id = "companyDropdown" onChange={this.handleCompanyChange}>
+                  <option value="0">Company</option>
                   {companies.map(e => {
                     return <option value={e}>{e}</option>
                   })}
               </select>
-
-              Age:<select id = "ageDropdown" onChange={this.handleAgeChange}>
-                  <option value="0">All</option>
+              </Col>
+              <Col>
+              {/*Age:*/}<select className='dropdown' id = "ageDropdown" onChange={this.handleAgeChange}>
+                  <option value="0">Age</option>
                   <option value="18">18</option>
                   <option value="19">19</option>
                   <option value="20">20</option>
@@ -293,16 +312,18 @@ class Directory extends Component{
                   <option value="22">22</option>
                   <option value="23">23+</option>
               </select>
-
-              Gender:<select id = "genderDropdown" onChange={this.handleGenderChange}>
-                  <option value="0">All</option>
+              </Col>
+              <Col>
+              {/*Gender:*/}<select className='dropdown' id = "genderDropdown" onChange={this.handleGenderChange}>
+                  <option value="0">Gender</option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
                   <option value="Other">Other</option>
               </select>
-
-              Ethnicity:<select id = "ethnicityDropdown" onChange={this.handleEthnicityChange}>
-                  <option value="0">All</option>
+              </Col>
+              <Col>
+              {/*Ethnicity:*/}<select className='dropdown' id = "ethnicityDropdown" onChange={this.handleEthnicityChange}>
+                  <option value="0">Ethnicity</option>
                   <option value="White">White</option>
                   <option value="Black">Black</option>
                   <option value="Hispanic or Latino">Latino</option>
@@ -311,9 +332,10 @@ class Directory extends Component{
                   <option value="Pacific Islander">P. Islander</option>
                   <option value="Other">Other</option>
               </select>
-
-              GPA:<select id = "GPADropdown" onChange={this.handleGPAChange}>
-                  <option value="0">All</option>
+              </Col>
+              <Col>
+              {/*GPA:*/}<select className='dropdown' id = "GPADropdown" onChange={this.handleGPAChange}>
+                  <option value="0">GPA</option>
                   <option value="1">0.00 - 0.49</option>
                   <option value="2">0.50 - 0.99</option>
                   <option value="3">1.00 - 1.49</option>
@@ -323,10 +345,11 @@ class Directory extends Component{
                   <option value="7">3.00 - 3.49</option>
                   <option value="8">3.50 - 4.00</option>
               </select>
+              </Col>
 
-              <button onClick={this.clear}>Clear</button>
-
-            </div>
+                <Col>
+              <button className='clear-button' onClick={this.clear}>Clear</button>
+              </Col>
             
           </Container>
         </Navbar>

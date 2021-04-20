@@ -14,6 +14,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "animated": "^0.2.2",
     "axios": "^0.21.1",
     "concurrently": "^6.0.0",
     "dotenv": "^8.2.0",
