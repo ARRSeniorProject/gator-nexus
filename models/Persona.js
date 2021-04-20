@@ -32,7 +32,7 @@ const PersonaSchema = new Schema({
     },
     skills: {
         type: [String],
-        required: [true, 'Specifying at least one skill is required']
+        required: [true, 'Skill array is required']
     },
     race: {
         type: String,
@@ -51,6 +51,7 @@ const PersonaSchema = new Schema({
     },
     householdIncome: {
         type: Number,
+        min: 0,
         required: [true, 'Household Income is required']
     },
     employmentStatus: {
@@ -69,7 +70,7 @@ const PersonaSchema = new Schema({
     phoneNumber: {
         type: String,
         default: "N/A",
-        match: /^(\d{3}-\d{3}-\d{4}|N\/A)$/,
+        match: /^([1-9]\d{2}-\d{3}-\d{4}|N\/A)$/,
         required: false
     },
     email: {
