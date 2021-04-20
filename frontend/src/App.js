@@ -8,7 +8,6 @@ import {
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import Home from './pages/Home';
-//import ItemList from './components/ItemList';
 import Directory from './pages/Directory';
 import Analysis from './pages/Analysis';
 import NewProfile from './pages/NewProfile';

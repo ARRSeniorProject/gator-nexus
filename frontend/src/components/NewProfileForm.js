@@ -3,9 +3,9 @@ import ChipInput from 'material-ui-chip-input';
 import axios from 'axios';
 import _ from 'underscore';
 import '@gouch/to-title-case';
-import { Formik, Form, Field } from 'formik';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { TextField, Select, MenuItem, InputLabel, FormControl, Button, Grid, Container, FormHelperText, Input } from '@material-ui/core';
+import { TextField, Select, MenuItem, InputLabel, FormControl, Button, Grid, Container, FormHelperText } from '@material-ui/core';
 import { PhotoCamera } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -72,7 +72,7 @@ class NewProfileForm extends Component {
                         <Formik
                         initialValues={{
                             gender: '',
-                            race: '',
+                            ethnicity: '',
                             age: '',
                             householdIncome: '',
                             employmentStatus: '',
@@ -87,10 +87,9 @@ class NewProfileForm extends Component {
                         }}
                         onSubmit={(values, {setSubmitting, resetForm}) => {
                             setSubmitting(true);
-                            //event.preventDefault();
                             var newProfile = {
                                 gender: values.gender,
-                                race: values.race,
+                                ethnicity: values.ethnicity,
                                 age: parseInt(values.age),
                                 householdIncome: parseFloat(values.householdIncome.replace(/,/g, '')),
                                 employmentStatus: parseInt(values.employmentStatus),
@@ -134,7 +133,7 @@ class NewProfileForm extends Component {
                                         } 
                                         else {
                                             newProfile.profilePictureLink = res.data.location;
-                                            axios.post('/api/personas', newProfile).then(res => console.log(res.data));
+                                            axios.post('/api/personas', newProfile).then(res => console.log(res));
                                             this.setState({submitted: true})
                                         }
                                     }
@@ -143,7 +142,8 @@ class NewProfileForm extends Component {
                                 });
                             } 
                             else {
-                                axios.post('/api/personas', newProfile).then(res => console.log(res.data));
+                                console.log(newProfile);
+                                axios.post('/api/personas', newProfile).then(res => console.log(res));
                                 this.setState({submitted: true})
                             }
                             this.setState({
@@ -155,7 +155,7 @@ class NewProfileForm extends Component {
                             this.profilePictureUpload.current.value = null;
                         }}
                         validationSchema={Yup.object().shape({
-                            race: Yup.string().required('Race is Required'),
+                            ethnicity: Yup.string().required('Ethnicity is Required'),
                             gender: Yup.string().required('Gender is Required'),
                             age: Yup.number().required('Age is Required'),
                             householdIncome: Yup.string().required('Household Income is Required'),
@@ -188,13 +188,13 @@ class NewProfileForm extends Component {
                                                     <Grid item xs={6}>
                                                         <h4 style={{textAlign: 'center'}}>Personal Info</h4>
                                                         <Grid item>
-                                                            <FormControl fullWidth  error={errors.race && touched.race}>
-                                                                <InputLabel htmlFor="race-dropdown">Race</InputLabel>
+                                                            <FormControl fullWidth  error={errors.ethnicity && touched.ethnicity}>
+                                                                <InputLabel style={{ paddingLeft: "12px" }} htmlFor="ethnicity-dropdown">Ethnicity</InputLabel>
                                                                 <Select
-                                                                name="race" 
+                                                                name="ethnicity" 
                                                                 variant="outlined"
-                                                                labelId="race-dropdown"
-                                                                value={values.race}
+                                                                labelId="ethnicity-dropdown"
+                                                                value={values.ethnicity}
                                                                 onChange={handleChange}
                                                                 >
                                                                     <MenuItem value="White">White</MenuItem>
@@ -205,13 +205,13 @@ class NewProfileForm extends Component {
                                                                     <MenuItem value="Pacific Islander">Pacific Islander</MenuItem>
                                                                     <MenuItem value="Other">Other</MenuItem>
                                                                 </Select>
-                                                                <FormHelperText>{(errors.race && touched.race) && errors.race}</FormHelperText>
+                                                                <FormHelperText>{(errors.ethnicity && touched.ethnicity) && errors.ethnicity}</FormHelperText>
                                                             </FormControl>
                                                         </Grid>
                                                         <br />
                                                         <Grid item>
                                                             <FormControl fullWidth error={errors.gender && touched.gender}>
-                                                                <InputLabel id="gender-dropdown">Gender</InputLabel>
+                                                                <InputLabel style={{ paddingLeft: "12px" }} htmlFor="gender-dropdown">Gender</InputLabel>
                                                                 <Select
                                                                 fullWidth
                                                                 name="gender" 
@@ -347,7 +347,7 @@ class NewProfileForm extends Component {
                                                             name="gpa"
                                                             label='GPA'
                                                             type='number'
-                                                            InputProps={{ inputProps: {min: 0, max: 4.0, step: 0.1} }}
+                                                            InputProps={{ inputProps: {min: 0, max: 4.0, step: 0.01} }}
                                                             helperText={((errors.gpa && touched.gpa) && errors.gpa) || '4.0 Scale'}
                                                             variant="outlined"
                                                             value={values.gpa}
