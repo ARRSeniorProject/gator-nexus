@@ -82,13 +82,6 @@ class GraphGrid extends Component {
           <h3>GPA, Family Income, Race</h3>
           <ScatterChartGPAHouseholdIncomeRaceGraph className="graph"/>
         </div>
-  
-        <div className="graph-wrap">
-          <h3>Area Chart</h3>
-          <AreaChartGPAFrequencyGraph className="graph"/>
-        </div>
-
-        
       </div>
     )
   }
